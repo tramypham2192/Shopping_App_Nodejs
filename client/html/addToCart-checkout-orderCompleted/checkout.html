@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Check Out</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../css/checkout.css">
+<body>
+<header class="site-header">
+  <div class="site-identity">
+    <a href="#"><img src="../images/logo.jpeg" alt="Site Name" /></a>
+    <h1><a href="#">AUZZY THE BEAR</a></h1>
+  </div>
+  <nav class="site-navigation">
+    <ul class="nav">
+        <!-- IF HAVE ROLE_USE, DISPLAY HEADER AS FOLLOW -->
+      
+        <!-- IF HAVE ROLE_ADMIN, DISPLAY HEADER AS FOLLOW -->
+
+        <!-- IF DO NOT HAVE ROLE_USER OR ROLE_ADMIN, DISPLAY HEADER AS FOLLOW -->
+
+      <!-- <div sec:authorize="!hasRole('ROLE_USER')">
+        <li><a th:href="@{/index}"><ion-icon name="home-outline"></ion-icon>Home</a></li>
+        <li><a th:href="@{/aboutUs-contactUs/about}"><ion-icon name="alert-circle-outline"></ion-icon>About</a></li>
+        <li><a th:href="@{/aboutUs-contactUs/contactUs}"><ion-icon name="people-outline"></ion-icon>Contact</a></li>
+        <li><a th:href="@{/product/productList}"><ion-icon name="storefront-outline"></ion-icon>Products</a></li>
+        <li><a th:href="@{/add-to-cart-item}"><ion-icon name="cart"></ion-icon>Cart</a></li>
+        <li><a th:href="@{/login}"><ion-icon name="people-outline"></ion-icon>Sign In</a></li>
+      </div>
+
+      <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <li><a th:href="@{/adminHomePage}"><ion-icon name="home-outline"></ion-icon>Home</a></li>
+        <li><a th:href="@{/product/productList}"><ion-icon name="storefront-outline"></ion-icon>Products</a></li>
+        <li><a th:text="${userName}"></a></li>
+      </div>
+      <div sec:authorize="hasRole('ROLE_USER')">
+        <li><a th:href="@{/index}"><ion-icon name="home-outline"></ion-icon>Home</a></li>
+        <li><a th:href="@{/aboutUs-contactUs/about}"><ion-icon name="alert-circle-outline"></ion-icon>About</a></li>
+        <li><a th:href="@{/aboutUs-contactUs/contactUs}"><ion-icon name="people-outline"></ion-icon>Contact</a></li>
+        <li><a th:href="@{/product/productList}"><ion-icon name="storefront-outline"></ion-icon>Products</a></li>
+        <li><a th:href="@{/add-to-cart-item}"><ion-icon name="cart"></ion-icon>Cart</a></li>
+        <li><a th:href="@{/logout}"><ion-icon name="people-outline"></ion-icon>Sign Out</a></li>
+        <li><a th:text="${userName}">lll</a></li>
+      </div> -->
+    </ul>
+  </nav>
+</header>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="col-6">
+        <div class="row">
+          <div class="col-75">
+            <div class="container">
+              <form action="/checkout" method="post">
+
+                <div class="row">
+                  <div class="col-50">
+                    <h3>Billing Address</h3>
+                    <label for="fname"><i class="fa fa-user"></i> Full Name</label>
+                    <input type="text" id="fname" name="firstname" >
+                    <label for="email"><i class="fa fa-envelope"></i> Email</label>
+                    <input type="text" id="email" name="email" >
+                    <label for="adr"><i class="fa fa-address-card-o"></i> Address</label>
+                    <input type="text" id="adr" name="address" >
+                    <label for="city"><i class="fa fa-institution"></i> City</label>
+                    <input type="text" id="city" name="city" >
+
+                    <div class="row">
+                      <div class="col-50">
+                        <label for="state">State</label>
+                        <input type="text" id="state" name="state" >
+                      </div>
+                      <div class="col-50">
+                        <label for="zip">Zip</label>
+                        <input type="text" id="zip" name="zip" >
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-50">
+                    <h3>Payment</h3>
+                    <label for="fname">Accepted Cards</label>
+                    <div class="icon-container">
+                      <i class="fa fa-cc-visa" style="color:navy;"></i>
+                      <i class="fa fa-cc-amex" style="color:blue;"></i>
+                      <i class="fa fa-cc-mastercard" style="color:red;"></i>
+                      <i class="fa fa-cc-discover" style="color:orange;"></i>
+                    </div>
+                    <label for="cname">Name on Card</label>
+                    <input type="text" id="cname" name="cardname" >
+                    <label for="ccnum">Credit card number</label>
+                    <input type="text" id="ccnum" name="cardnumber" >
+                    <label for="expmonth">Exp Month</label>
+                    <input type="text" id="expmonth" name="expmonth" >
+
+                    <div class="row">
+                      <div class="col-50">
+                        <label for="expyear">Exp Year</label>
+                        <input type="text" id="expyear" name="expyear" >
+                      </div>
+                      <div class="col-50">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" name="cvv">
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+                <label>
+                  <input type="checkbox" checked="checked" name="sameadr"> Shipping address same as billing
+                </label>
+                <input type="submit" value="Complete Order" class="btn">
+              </form>
+            </div>
+          </div>
+
+          <div class="col-25">
+            <div class="container">
+              <h4>Cart
+                <span class="price" style="color:black">
+                    <i class="fa fa-shopping-cart"></i>
+                    <b></b>
+                  </span>
+              </h4>
+
+              <hr>
+              <p>Total <span class="price" style="color:black"><b></b></span></p>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>  <!-- carousel encapsulate card column -->
+
+
+    </div>  <!--about and review content column-->
+
+  </div>  <!--row-->
+
+</div>    <!-- container -->
+<!-- icon io   -->
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

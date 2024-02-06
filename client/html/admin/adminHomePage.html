@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AUZZY THE BEAR - Admin Home Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/adminHomePage.css">
+</head>
+<body>
+<header class="site-header">
+    <div class="site-identity">
+        <a href="#"><img src="../images/logo.jpeg" alt="Site Name" /></a>
+        <h1><a href="#">AUZZY THE BEAR</a></h1>
+    </div>
+    <nav class="site-navigation">
+        <ul class="nav">
+            <li><a th:href="@{/adminHomePage}"><ion-icon name="home-outline"></ion-icon>Home</a></li>
+            <li><a th:href="@{/product/productList}"><ion-icon name="storefront-outline"></ion-icon>Products</a></li>
+            <li><a th:href="@{/logout}"><ion-icon name="people-outline"></ion-icon>Sign Out</a></li>
+            <li><a th:text="${userName}"></a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="frame">
+    <button class="custom-btn btn-13"><a th:href="@{/product/addProduct}">Add Product</a></button>
+    <button class="custom-btn btn-13"><a th:href="@{/product/editProduct}">Edit Product</a></button>
+    <button class="custom-btn btn-13"><a th:href="@{/product/deleteProduct}">Delete Product</a></button>
+    <button class="custom-btn btn-13"><a href="#">Manage Orders</a></button>
+</div>
+
+<div class="container">
+    <div class="row">
+        <h1> Registered Users </h1>
+    </div>
+    <table class="table table-striped table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user: ${users}">
+                <td th:text="${user.firstName}"></td>
+                <td th:text="${user.lastName}"></td>
+                <td th:text="${user.email}"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- icon io   -->
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

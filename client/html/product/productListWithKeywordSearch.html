@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product List</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../../css/productList.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="site-identity">
+    <a href="#"><img src="../../images/logo.jpeg" alt="Site Name" /></a>
+    <h1><a href="#">AUZZY THE BEAR</a></h1>
+  </div>
+  <nav class="site-navigation">
+    <ul class="nav">
+      <div sec:authorize="!hasRole('ROLE_USER')">
+        <li><a th:href="@{/index}"><ion-icon name="home-outline"></ion-icon>Home</a></li>
+        <li><a th:href="@{/aboutUs-contactUs/about}"><ion-icon name="alert-circle-outline"></ion-icon>About</a></li>
+        <li><a th:href="@{/aboutUs-contactUs/contactUs}"><ion-icon name="people-outline"></ion-icon>Contact</a></li>
+        <li><a th:href="@{/product/productList}"><ion-icon name="storefront-outline"></ion-icon>Products</a></li>
+        <li><a th:href="@{/add-to-cart-item}"><ion-icon name="cart"></ion-icon>Cart</a></li>
+        <li><a th:href="@{/login}"><ion-icon name="people-outline"></ion-icon>Sign In</a></li>
+      </div>
+
+      <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <li><a th:href="@{/adminHomePage}"><ion-icon name="home-outline"></ion-icon>Home</a></li>
+        <li><a th:href="@{/product/productList}"><ion-icon name="storefront-outline"></ion-icon>Products</a></li>
+        <li><a th:text="${userName}"></a></li>
+      </div>
+      <div sec:authorize="hasRole('ROLE_USER')">
+        <li><a th:href="@{/index}"><ion-icon name="home-outline"></ion-icon>Home</a></li>
+        <li><a th:href="@{/aboutUs-contactUs/about}"><ion-icon name="alert-circle-outline"></ion-icon>About</a></li>
+        <li><a th:href="@{/aboutUs-contactUs/contactUs}"><ion-icon name="people-outline"></ion-icon>Contact</a></li>
+        <li><a th:href="@{/product/productList}"><ion-icon name="storefront-outline"></ion-icon>Products</a></li>
+        <li><a th:href="@{/add-to-cart-item}"><ion-icon name="cart"></ion-icon>Cart</a></li>
+        <li><a th:href="@{/logout}"><ion-icon name="people-outline"></ion-icon>Sign Out</a></li>
+        <li><a th:text="${userName}">lll</a></li>
+      </div>
+    </ul>
+  </nav>
+</header>
+<main>
+  <section>
+    <div id="hacker-list">
+      <div class="form-inline">
+        <div class="form-group">
+          <form th:action="@{/product/productListWithKeywordSearch/{keyword}}">
+            <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" required placeholder="Search" class="search form-control"/>
+            <input class="sort btn btn-default" type="submit" value="Search" />
+          </form>
+        </div>
+
+        <div class="form-group">
+          <form th:action="@{/product/sortProductsFromCheapestToMostExpensive}">
+            <input class="sort btn btn-default" type="submit" value="Sort Products From Cheapest To Most Expensive" />
+          </form>
+        </div>
+
+        <div class="form-group">
+          <form th:action="@{/product/sortProductsAccordingToMostOrdered}">
+            <input type="submit" class="sort btn btn-default" value="Top 3 Most Ordered Products"/>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--------------------------------------------------------------------product list card----------------------------------------->
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-sm-8 col-md-6 col-lg-4" th:each="product : ${productList}">
+        <div class="card">
+          <img class="card-img-top" th:src="@{${product.ImageURL}}" alt="">
+          <div class="card-body">
+            <p class="card-text" th:text="${product.name}">Name</p>
+            <p class="card-text" th:text="'$' + ${product.price}">Desc</p>
+            <p class="card-text" th:text="${product.description}">Desc</p>
+            <div class= "container mt-5 pb-5">
+              <div class="row">
+                <div class="qty-container">
+                  <button class="qty-btn-minus btn-rounded"  th:data-param1="${product.id}" th:data-param2="${productQuantity}" onclick="decreaseProductQuantity(this);"><i class="fa fa-chevron-left"></i></button>
+                  <div id="id" style="display: inline;" th:id="${product.id}"}>0</div>
+                  <button class="qty-btn-plus  btn-rounded"  th:data-param1="${product.id}" th:data-param2="${productQuantity}" onclick="increaseProductQuantity(this);"><i class="fa fa-chevron-right"></i></button>
+                </div>
+              </div>
+            </div>
+            <button type="button" id="addToCartButton" th:onclick="'addToCartButtononclick()'">Add to cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<script th:src="@{/js/add-to-cart-item.js}"> </script>
+<!-- icon io   -->
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--    <div class="row">-->
+<!--      <div class="col-xl-3" th:each="product : ${productList}">-->
+<!--        <div class="card custom-card text-center mr-2 mt-2 ml-2 mb-2"-->
+<!--             style="width: 15rem; display: inline-block">-->
+<!--          <div class="card-body">-->
+<!--            <p class="card-text" th:text="${product.name}">Name</p>-->
+<!--            <p class="card-text" th:text="${product.price}">Desc</p>-->
+<!--            <p class="card-text" th:text="${product.description}">Desc</p>-->
+<!--            <img th:src="@{${product.ImageURL}}" width="100" height="100"/>-->
+<!--&lt;!&ndash;            <form method="post" role="form" th:action="@{/add-to-cart-item}" th:object="${productQuantity}">&ndash;&gt;-->
+
+<!--            <button type="button" class="btn btn-primary" id="addToCartButton" th:onclick="'addToCartButtononclick()'">Add to cart</button>-->
+<!--            <div class="grid text-center">-->
+<!--                <div class="g-col-6 g-col-md-4">-->
+<!--                  <button th:data-param1="${product.id}" th:data-param2="${productQuantity}" onclick="decreaseProductQuantity(this);">-</button>-->
+<!--&lt;!&ndash;                  <button th:onclick="'decreaseProductQuantity(\'' + ${product.id} + '\');'"> - </button>&ndash;&gt;-->
+<!--                </div>-->
+<!--                <div class="g-col-6 g-col-md-4">-->
+<!--                  <div id="id" th:id="${product.id}"}>0</input>-->
+<!--                </div>-->
+<!--                <div class="g-col-6 g-col-md-4">-->
+<!--&lt;!&ndash;                  <button th:onclick="'increaseProductQuantity(\'' + ${product.id} + '\');'"> + </button>&ndash;&gt;-->
+<!--                  <button th:data-param1="${product.id}" th:data-param2="${productQuantity}" onclick="increaseProductQuantity(this);">+</button>-->
+
+<!--                </div>-->
+<!--              </div>-->
+<!--              </div>-->
+<!--&lt;!&ndash;            </form>&ndash;&gt;-->
+<!--          </div>-->
+<!--        </div>-->
+
+
+
+<!-- Modal -->
+<!--        <div class="modal fade" id="cart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+<!--          <div class="modal-dialog modal-lg" role="document">-->
+<!--            <div class="modal-content">-->
+<!--              <div class="modal-header">-->
+<!--                <h5 class="modal-title" id="exampleModalLabel">Cart</h5>-->
+<!--                <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                  <span aria-hidden="true">&times;</span>-->
+<!--                </button>-->
+<!--              </div>-->
+<!--              <div class="modal-body">-->
+<!--                <table class="show-cart table">-->
+
+<!--                </table>-->
+<!--                <div>Total price: $<span class="total-cart"></span></div>-->
+<!--              </div>-->
+<!--              <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+<!--                <button type="button" class="btn btn-primary">Order now</button>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
