@@ -16,37 +16,15 @@
   </div>
     <nav class="site-navigation">
         <ul class="nav">
-            <div sec:authorize="hasRole('ROLE_ADMIN')">
-                <li><a th:href="@{/adminHomePage}"><ion-icon name="home-outline"></ion-icon>Home</a></li>
-                <li><a th:href="@{/product/productList}"><ion-icon name="storefront-outline"></ion-icon>Products</a></li>
-                <li><a th:text="${userName}"></a></li>
-            </div>
+            <li><a href="/adminHomePage"><ion-icon name="home-outline"></ion-icon>Home</a></li>
+            <li><a href="/product/productList"><ion-icon name="storefront-outline"></ion-icon>Products</a></li>
+            <!-- DISPLAY USERNAME AFTER LOGGED IN HERE -->
         </ul>
     </nav>
 </header>
-<!--<form role="form" name = "edit-form" id="edit-form" method="GET">-->
-<!--  <label for="productId">Product ID:</label><br>-->
-<!--  <input type="text" id="productId" name="productId" value=""><br>-->
-
-<!--  <label for="productName">Product name:</label><br>-->
-<!--  <input type="text" id="productName" name="productName" value=""><br>-->
-
-<!--  <label for="price">Product Price:</label><br>-->
-<!--  <input type="text" id="price" name="price" value=""><br><br>-->
-
-<!--  <label for="productDescription">Product Description:</label><br>-->
-<!--  <input type="text" id="productDescription" name="productDescription" value=""><br><br>-->
-
-<!--  <label for="img">Product Image:</label><br>-->
-<!--  <input type="text" id="img" name="img" value=""><br><br>-->
-
-<!--  <input id = "editProductButton" type="submit" value="edit product" />-->
-
-<!--</form>-->
-
 <!--EDIT PRODUCT FORM-->
 <div class="container w-50 border mt-5 " id="form">
-  <form class="mt-5" role="form" name = "edit-form" id="edit-form" METHOD="POST"  th:href="@{'/product/editProduct'}"  th:object="${product}" enctype="multipart/form-data">
+  <form class="mt-5" role="form" name = "edit-form" id="edit-form" METHOD="POST">
 <!--  <form class="mt-5" role="form" name = "edit-form" id="edit-form" method="POST" enctype="multipart/form-data">-->
     <label for="productId">Product ID:</label><br>
     <input type="text" id="productId" name="productId" value=""><br>
@@ -70,6 +48,6 @@
 <!-- icon io   -->
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-<script type="module" th:src="@{/js/Product-edit-form.js}"></script>
+<script src="../../js/editProduct.js"></script>
 </body>
 </html>
