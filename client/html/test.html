@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+          <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+            <div class="card">
+              <img class="img img-fluid" src='https://images.unsplash.com/photo-1582785513054-8d1bf9d69c1a?q=80&w=2835&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+              alt="${product.product_name}"> 
+              <div class="card-body">
+                <p class="card-text">${product.product_name}</p>
+                <p class="card-text">${product.product_price} $</p>
+                <p class="card-text">${product.product_description}</p>
+                <div class= "container mt-5 pb-5">
+                  <div class="row">
+                      <div class="qty-container">
+                        <button class="qty-btn-minus btn-rounded" onclick="decreaseProductQuantity();"><i class="fa fa-chevron-left"></i></button>
+                        <div id="id" style="display: inline;"  id="${product.product_id}">${product.product_quantity}</div>
+                        <button class="qty-btn-plus  btn-rounded" onclick="increaseProductQuantity();"><i class="fa fa-chevron-right"></i></button>
+                      </div>
+                  </div>
+                </div>
+                <button type="button" id="addToCartButton"  onclick="'addToCartButtononclick()'">Add to cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</body>
+</html>
