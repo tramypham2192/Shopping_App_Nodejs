@@ -59,4 +59,4 @@ module.exports = {
     }
 }
 
-module.exports.seed();
+// module.exports.seed();
