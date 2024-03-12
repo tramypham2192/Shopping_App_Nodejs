@@ -18,8 +18,8 @@ const cors = require('cors');
 const app = express();
 const session = require('express-session');
 const bodyParser = require("body-parser");
-const passport = require("passport");
-const { Strategy } = require('passport-local');
+const passport = require('passport');
+const  LocalStrategy  = require('passport-local');
 const { 
     // getAllProductsWithSession,
     increaseProductQuantity,
@@ -68,7 +68,7 @@ app.get("/cart", (req, res) => {
   })
   
 app.get("/products", (req, res) => {
-  console.log('req.user is ' + req.user);
+  console.log('access /products. req.user is ' + req.user);
   if (req.isAuthenticated()) {
     console.log('passportjs shows user input correct username and password!');
     console.log("username input is " + req.user.user_email);
@@ -84,18 +84,32 @@ app.get("/products", (req, res) => {
 
 app.post('/register', register);
 
-app.post(
-  "/login", (req, res) => {
-    console.log('at least log smt');
-    passport.authenticate("local", {
-      successRedirect: "/products",
-      failureRedirect: "/loginFailed",
-    });  
+// app.post(
+//   "/login", 
+//   // (req, res) => {
+//   //   console.log('access /login. email is ' + req.body.email);
+//   //   let username = req.body.email;
+//   //   let password = req.body.password;
+//   //   console.log("(before calling passport.use) username is  " + username);
+//   //   console.log("(before calling passport.use) password is " + password);
     
+//     passport.authenticate("local", {
+//       successRedirect: "/products",
+//       failureRedirect: "/loginFailed",
+//     }),  
+    
+//   );
+  app.post('/login',
+    passport.authenticate('local', { failureRedirect: '/loginFailed', failureMessage: true }),
+    function(req, res) {
+      res.redirect('/products');
   });
 
   passport.use(
-    new Strategy(async function verify(username, password, cb) {
+    new LocalStrategy(async function verify(username, password, cb) {
+      console.log('hello new day');
+      console.log("username is " + username);
+      console.log("password is " + password);
       try {
         const result = await db.query("SELECT * FROM users WHERE user_email = $1 ", [
           username,
@@ -124,8 +138,8 @@ app.post(
       } catch (err) {
         console.log(err);
       }
-    })
-  );
+    }
+  ));  
 
 passport.serializeUser((user, cb) => {
   cb(null, user);
