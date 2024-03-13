@@ -44,7 +44,7 @@ const db = new pg.Client({
 db.connect();
 
 // CALL FUNCTION IN SEED.JS
-const {seedProducts, seedUsers} = require('./seed');
+const {seedProducts, seedUsers} = require('./seed.js');
 
 // CALL FUNCTION IN CONTROLLER.JS
 const { 
