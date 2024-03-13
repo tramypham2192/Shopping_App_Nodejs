@@ -33,7 +33,7 @@ app.use('/', express.static('../client'));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// CONNECT WITH DATABASE
+// CONNECT TO DATABASE
 const db = new pg.Client({
   user: "postgres",
   host: "localhost",
