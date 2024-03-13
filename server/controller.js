@@ -180,16 +180,11 @@ module.exports = {
             bcrypt.compare(loginPassword, storedPassword, (err, result) => {
                 if (err){
                     return cb(err);
-                    console.error('Error comparing passwords: ', err);
                 } else {
                     if (result) {
                         return cb(null, user);
-                        res.status(200).send('User log in successfully!'); 
-                        console.log('User log in successfully!'); 
                     } else {
                         return cb(null, false);
-                        res.status(200).send('Invalid email or password');
-                        console.log('Invalid email or password');
                     }
                 }
             })
@@ -202,45 +197,43 @@ module.exports = {
             passport.deserializeUser((user, cb) => {
                 cb(null, user);
             })
-    },
+    }, 
 
-    createCart: async (req, res) => {
+    createCart: async (req, res) => { 
         // console.log('req.user.user_id is ', req.user.user_id);
-        let productId = req.body.product_id;
-        console.log('product_id in controller.js is ' + productId);
-        let product_quantity = req.body.product_quantity;
-        console.log('product_quantity in controller.js is ' + product_quantity);
+        
 
-        // let products_in_cart = await sequelize.query(`
-        //     select products_in_cart from carts where user_id = ${req.user.user_id};`)
-        //         .then(dbres => {
-        //             console.log('products_in_cart keys currently is ' + Object.keys(dbres[0]));
-        //             console.log('products_in_cart values currently is ' + Object.values(dbres[0])["product_id"]);
-        //         });    
-        let products_in_cart = "";
-        await sequelize.query(`
-            select products_in_cart from carts where user_id = 1;`)
+        let productId = req.body.product_id; 
+        let product_quantity = req.body.product_quantity; 
+        console.log('product_id in controller.js is ' + productId);  
+        console.log('product_quantity in controller.js is ' + product_quantity);  
+        let products_in_cart = await sequelize.query(`select products_in_cart from carts where user_id = ${req.user.user_id};`)
+                .then(dbres => { 
+                    console.log('products_in_cart keys currently is ' + Object.keys(dbres[0]));
+                    console.log('products_in_cart values currently is ' + Object.values(dbres[0])["product_id"]);
+                });           
+        // let products_in_cart = ""; 
+        await sequelize.query(`select products_in_cart from carts where user_id = 1;`)  
                 .then(dbres => {
-                    products_in_cart = dbres[0];
-                });      
+                    products_in_cart = dbres[0];  
+                });                    
         // CONSOLE.LOG TO SEE THE CONTENT OF products_in_cart in order to know if can use find() and filter() functions on it or not  
-        console.log('products_in_cart currently is ', JSON.stringify(products_in_cart), "\n"); 
+        console.log('products_in_cart currently is ', JSON.stringify(products_in_cart), "\n");   
         const arr = products_in_cart;
-        // console.log(arr[0].products_in_cart); 
-        // console.log('');
         
         if(products_in_cart == ""){ 
             await sequelize.query(`INSERT INTO carts (user_id, products_in_cart)
-                    values (1, 
+                    values (${1}, 
                         jsonb_build_array(json_build_object('product_id', ${productId}, 'product_quantity', ${product_quantity})) ::jsonb
                         );`)
+            .then(dbres => console.log(dbres[0]));
         }
-        else { 
+        else {     
             const products_and_quantities = arr[0].products_in_cart;     
             console.log('products_and_quantities is ', products_and_quantities, "\n"); 
             console.log('type of products_and_quantities is ', Array.isArray(products_and_quantities)); 
             let updateObj = products_and_quantities.find((element) => {return element.product_id == productId}) 
-            console.log('updateObj is ', updateObj);
+            console.log('updateObj is ', updateObj);     
             if (updateObj != null){ 
                 const updateIndex = products_and_quantities.findIndex((product) => {
                     return product == updateObj;
@@ -249,17 +242,16 @@ module.exports = {
                 await sequelize.query(`update carts set products_in_cart = jsonb_set(products_in_cart, '{${updateIndex}}' , '{"product_id": ${productId}, "product_quantity": ${product_quantity}}');`)
             }
             else {      
-                await sequelize.query(`
+                await sequelize.query(`           
                 update carts 
                 set products_in_cart = products_in_cart || json_build_object('product_id', ${productId}, 'product_quantity', ${product_quantity})::jsonb
                 where user_id = ${1}
             ;`)
+            };
             }
-        };
-        // console.log('products_in_cart is : product_id is ' + products_in_cart.data.productId + " and product_quantity is " + products_in_cart.data.product_quantity);
-    },
+        },  
 
-    createOrder:  async (req, res) => {
+    createOrder:  async (req, res) => {  
 
     }
 }
@@ -268,3 +260,4 @@ module.exports = {
 // module.exports.increaseProductQuantity();
 // module.exports.register();
 // module.exports.login();
+

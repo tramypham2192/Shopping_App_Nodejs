@@ -78,24 +78,24 @@ app.get("/productList", getAllProductsWithSession);
 
 app.get("/products",  (req, res) => {
   console.log("user after calling /products is " + req.user.user_firstname + " " + req.user.user_lastname);
-  // if (req.isAuthenticated()) {
+  if (req.isAuthenticated()) {
     res.redirect("../html/productList.html");
-  // } else {
-    // res.redirect("/login");
-  // }
+  } else {
+    res.redirect("/login");
+  }
 });
 
 app.get('/increase_product_quantity/:product_id/:product_quantity', increaseProductQuantity);
 
-app.get('/decrease_product_quantity/:product_id/:product_quantity', decreaseProductQuantity); 
+app.get('/decrease_product_quantity/:product_id/:product_quantity', decreaseProductQuantity);  
 
 // // cart requests
 app.get("/cart", getCart);
 
-app.get("/cart", (req, res) => {
-  console.log('req.user when accessing /cart is ' + req.user.user_firstname + " " + req.user.user_lastname);
-  getCart;
-})
+// app.get("/cart", (req, res) => {
+//   console.log('req.user when accessing /cart is ' + req.user.user_firstname + " " + req.user.user_lastname);
+//   getCart;
+// })
 
 // // --------------------POST REQUESTS--------------------
 app.post('/register', register);
