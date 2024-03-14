@@ -23,8 +23,7 @@ module.exports = {
                 product_name varchar(200),
                 product_imagepath varchar(600),
                 product_description varchar(1000),
-                product_price integer,
-                product_quantity integer default 0
+                product_price integer
             );
 
             insert into products (product_name, product_imagePath, product_description, product_price)

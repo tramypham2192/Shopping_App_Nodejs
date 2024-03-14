@@ -27,16 +27,7 @@ function makeProductCard(product){
             <p class="card-text">${product.product_name}</p>
             <p class="card-text">${product.product_price} $</p>
             <p class="card-text">${product.product_description}</p>
-            <div class= "container mt-5 pb-5">
-              <div class="row">
-                  <div class="qty-container">
-                    <button class="qty-btn-minus btn-rounded" onclick="decreaseProductQuantity(${product.product_id}, ${product.product_quantity});"><i class="fa fa-chevron-left"></i></button>
-                    <div id="id" style="display: inline;"  id="${product.product_id}">${product.product_quantity}</div>
-                    <button class="qty-btn-plus  btn-rounded" onclick="increaseProductQuantity(${product.product_id}, ${product.product_quantity});"><i class="fa fa-chevron-right"></i></button>
-                  </div>
-              </div>
-            </div>
-            <button type="button" id="addToCartButton"  onclick="addToCartButtononclick(${product.product_id}, ${product.product_quantity});">Add to cart</button>
+            <button type="button" id="addToCartButton"  onclick="addToCartButtononclick(${product.product_id});">Add to cart</button>
           </div>
         </div>
       </div>
@@ -51,23 +42,23 @@ getAllProducts();
       
 //--------------------------------------------FUNCTION TO INCREASE AND DECREASE PRODUCT QUANTITY----------------------------------------------------------------------//
 function increaseProductQuantity(product_id, product_quantity){
-  const paramsObj = {
+  const obj = {
     product_id: product_id,
     product_quantity: product_quantity
   };
-  axios.get(`http://localhost:4000/increase_product_quantity/${product_id}/${product_quantity}`)
+  axios.get('http://localhost:4000/updateCart', obj)
     .then((res) => {
       getAllProducts();
     })
 }
 
 function decreaseProductQuantity(product_id, product_quantity){
-  const paramsObj = {
+  const obj = {
     product_id: product_id,
     product_quantity: product_quantity
   };
   if (product_quantity >= 1){
-    axios.get(`http://localhost:4000/decrease_product_quantity/${product_id}/${product_quantity}`)
+    axios.get('http://localhost:4000/updateCart', obj)
     .then((res) => {
       getAllProducts();
     })
@@ -78,28 +69,13 @@ function decreaseProductQuantity(product_id, product_quantity){
 }
 
 //--------------------------------------------FUNCTION TO ADD TO CART----------------------------------------------------------------------//
-function addToCartButtononclick(product_id, product_quantity) {
-  let orderObj = {
-    product_id: product_id,
-    product_quantity: product_quantity
-  }
-
+function addToCartButtononclick(product_id) {
   let cartObj = {
     product_id: product_id,
-    product_quantity: product_quantity
   }
+  alert("Product added to cart. Quantity: 1. Please go to cart to add/reduce Quantity");
   console.log('product_id in productList.js is ', product_id);
-  console.log('product_quantity in productList.js is ', product_quantity);
-  // axios.post('http://localhost:4000/order', orderObj)
-  //   .then(console.log('res.data from calling /order is ' + res.data));
-  // axios.post('http://localhost:4000/cart', cartObj)
-  //   .then (console.log('res.data from calling /cart is ' + res.data));
 
-  axios.all([
-    axios.post('http://localhost:4000/cart', cartObj),
-    // axios.post('http://localhost:4000/order', orderObj)
-  ])
-  // .then(axios.spread((data1, data2) => {
-  //   console.log('res.data from calling /cart', data1, 'res.data from calling /order', data2);
-  // }));
+  axios.post('http://localhost:4000/insertIntoCart', cartObj)
+  .then(res => console.log('res from calling /cart is ', res.data));
 };
