@@ -40,20 +40,20 @@ module.exports = {
         let products_and_quantities = [];
         let responseData = [];
 
-        await sequelize.query(
-            `with product_id as (
-                SELECT DISTINCT value->'product_id' AS product_id
-                FROM carts, jsonb_array_elements(carts.products_in_cart)
-                )
-                ,
-                carts(product_quantity) as (
-                    SELECT DISTINCT value->'product_quantity' AS product_quantity
-                    FROM carts, jsonb_array_elements(carts.products_in_cart)
-                )
-                select product_name, product_price, product_quantity
-                from products
-                join carts
-                on products.product_id = product_id ::int;`)
+        await sequelize.query( 
+            `
+            select user_id, products.product_id, product_name, product_price, product_quantity 
+            from
+            (SELECT DISTINCT                             
+                user_id,
+                value->'product_id' AS product_id,
+                value->'product_quantity' AS product_quantity
+            FROM carts,
+            jsonb_array_elements(carts.products_in_cart)) processed_carts
+            inner join products on processed_carts.product_id::int = products.product_id
+            where user_id = 1
+            order by products.product_id;
+            `)
         .then((dbres) => {
             console.log("product_name and product_quantity in carts is ", dbres[0]);
             return res.status(200).send(dbres[0]); 
@@ -225,11 +225,68 @@ module.exports = {
             }
     },
 
-    updateCart: async (req, res) => {
-        let productId = req.body.product_id; 
-        let product_quantity = req.body.product_quantity;  
-        // console.log('product_id in controller.js is ' + productId);  
-        // console.log('product_quantity in controller.js is ' + product_quantity);            
+    decreaseProductQuantityInCart: async (req, res) => {
+        console.log('decreaseProductQuantityInCart function is called');
+        console.log('req is ', req);
+        let productId = +req.body.product_id; 
+        let product_quantity = +req.body.product_quantity;
+        let new_product_quantity = product_quantity - 1;
+        // await sequelize.query(`
+        //     select product_quantity 
+        //     from
+        //     (SELECT DISTINCT                             
+        //         user_id,
+        //         value->'product_id' AS product_id,
+        //         value->'product_quantity' AS product_quantity
+        //     FROM carts,
+        //     jsonb_array_elements(carts.products_in_cart)) processed_carts
+        //     where user_id = 1 and product_id::int = 1;
+        // `)  
+        // .then(dbres => console.log('current quantity of product with id ', productId, ' in cart is ', dbres[0]));
+        let products_in_cart = ""; 
+        await sequelize.query(`select products_in_cart from carts where user_id = 1;`)  
+                .then(dbres => {
+                    products_in_cart = dbres[0];  
+                });                    
+        // CONSOLE.LOG TO SEE THE CONTENT OF products_in_cart in order to know if can use find() and filter() functions on it or not  
+        // console.log('products_in_cart currently is ', JSON.stringify(products_in_cart), "\n");   
+        const arr = products_in_cart;      
+        const products_and_quantities = arr[0].products_in_cart;     
+        // console.log('products_and_quantities is ', products_and_quantities, "\n"); 
+        // console.log('type of products_and_quantities is ', Array.isArray(products_and_quantities)); 
+        let updateObj = products_and_quantities.find((element) => {return element.product_id == productId}) 
+        // console.log('updateObj is ', updateObj);     
+        if (updateObj != null){ 
+            const updateIndex = products_and_quantities.findIndex((product) => {
+                return product == updateObj;
+            });  
+            // console.log('updateIndex is ', updateIndex);    
+            await sequelize.query(`update carts set products_in_cart = jsonb_set(products_in_cart, '{${updateIndex}}' , '{"product_id": ${productId}, "product_quantity": ${new_product_quantity}}');`)
+            .then((dbres) => {
+                // console.log('update product quantity in cart: ');
+                res.status(200).send(`update product quantity in cart successfully! Product_id is " ${productId}, " Product_quantity is ", ${new_product_quantity}`);
+            })
+        }   
+    },
+
+    increaseProductQuantityFunction: async (req, res) => {
+        console.log('increaseProductQuantityInCart function is called');
+        console.log('req is ', req);
+        let productId = +req.body.product_id; 
+        let product_quantity = +req.body.product_quantity;
+        let new_product_quantity = product_quantity + 1;
+        // await sequelize.query(`
+        //     select product_quantity 
+        //     from
+        //     (SELECT DISTINCT                             
+        //         user_id,
+        //         value->'product_id' AS product_id,
+        //         value->'product_quantity' AS product_quantity
+        //     FROM carts,
+        //     jsonb_array_elements(carts.products_in_cart)) processed_carts
+        //     where user_id = 1 and product_id::int = 1;
+        // `)  
+        // .then(dbres => console.log('current quantity of product with id ', productId, ' in cart is ', dbres[0]));
         let products_in_cart = ""; 
         await sequelize.query(`select products_in_cart from carts where user_id = 1;`)  
                 .then(dbres => {
@@ -246,12 +303,12 @@ module.exports = {
         if (updateObj != null){ 
             const updateIndex = products_and_quantities.findIndex((product) => {
                 return product == updateObj;
-            });
+            });  
             console.log('updateIndex is ', updateIndex);    
-            await sequelize.query(`update carts set products_in_cart = jsonb_set(products_in_cart, '{${updateIndex}}' , '{"product_id": ${productId}, "product_quantity": ${product_quantity}}');`)
+            await sequelize.query(`update carts set products_in_cart = jsonb_set(products_in_cart, '{${updateIndex}}' , '{"product_id": ${productId}, "product_quantity": ${new_product_quantity}}');`)
             .then((dbres) => {
                 console.log('update product quantity in cart: ');
-                res.status(200).send(`update product quantity in cart successfully! Product_id is " ${productId}, " Product_quantity is ", ${product_quantity}`);
+                res.status(200).send(`update product quantity in cart successfully! Product_id is " ${productId}, " Product_quantity is ", ${new_product_quantity}`);
             })
         }   
     },
