@@ -17,8 +17,9 @@ registerForm.addEventListener("submit", (event) => {
     console.log('password in register.js is ' + password.value);
     axios.post('http://localhost:4000/register', objParams)
         .then(res => {
-            console.log(res);
-            successRegister.innerHTML = res.data; 
+            console.log('res.data from successfully register is ', res.data);
+            alert(res.data);
+            window.location.href = "./login.html";
         })
         .catch(err => console.log(err));
 })

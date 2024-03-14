@@ -28,7 +28,8 @@ function makeProductCard(product){
             <p class="card-text">${product.product_price} $</p>
             <p class="card-text">${product.product_description}</p>
             <button type="button" id="addToCartButton"  onclick="addToCartButtononclick(${product.product_id});">Add to cart</button>
-          </div>
+            <button type="button" id="goToCartButton"  onclick="goToCartFunction();");">Go to cart</button>
+            </div>
         </div>
       </div>
     </div>
@@ -58,7 +59,7 @@ function decreaseProductQuantity(product_id, product_quantity){
     product_quantity: product_quantity
   };
   if (product_quantity >= 1){
-    axios.get('http://localhost:4000/updateCart', obj)
+    axios.get('http://localhost:4000/updateCart', obj) 
     .then((res) => {
       getAllProducts();
     })
@@ -79,3 +80,8 @@ function addToCartButtononclick(product_id) {
   axios.post('http://localhost:4000/insertIntoCart', cartObj)
   .then(res => console.log('res from calling /cart is ', res.data));
 };
+
+//--------------------------------------------FUNCTION TO GO TO CART PAGE----------------------------------------------------------------------//
+function goToCartFunction(){
+  window.location.href = "../html/cart.html";
+}

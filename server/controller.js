@@ -36,7 +36,9 @@ app.use (passport.initialize());
 app.use(passport.session()); 
 
 module.exports = {
+    // -----------------------------------CARTS----------------------------------- //
     getCart: async (req, res) => {
+        let user_id = req.user.user_id;
         let products_and_quantities = [];
         let responseData = [];
 
@@ -51,7 +53,7 @@ module.exports = {
             FROM carts,
             jsonb_array_elements(carts.products_in_cart)) processed_carts
             inner join products on processed_carts.product_id::int = products.product_id
-            where user_id = 1
+            where user_id = ${user_id}
             order by products.product_id;
             `)
         .then((dbres) => {
@@ -60,6 +62,8 @@ module.exports = {
         })
         .catch(err => console.log(err));
     },
+
+    // -----------------------------------PRODUCTS----------------------------------- //
 
     getAllProducts: (req, res) => {
         if (checkLogInSuccessWithoutSession == true) {   
@@ -84,6 +88,8 @@ module.exports = {
         })
         .catch(err => console.log(err));
     },
+
+    // -----------------------------------USERS----------------------------------- //
 
     register: async (req, res) => {
         console.log('calling register function in controller.js!');
@@ -111,7 +117,7 @@ module.exports = {
                     // step 3: save new user into table users
                     sequelize.query(`INSERT INTO users (user_firstname, user_lastname, user_email, user_password)
                     values ('${firstname}', '${lastname}', '${email}', '${hash}');`)
-                    .then(res => {console.log('User registered successfully!');})
+                    .then(dbres => res.status(200).send("User register successfully!"));
                 }
             })
         }
@@ -184,16 +190,17 @@ module.exports = {
     }, 
 
     insertIntoCart: async (req, res) => {  
+        let user_id = req.user.user_id;
         let productId = req.body.product_id; 
         let products_in_cart = ""; 
-        await sequelize.query(`select products_in_cart from carts where user_id = 1;`)  
+        await sequelize.query(`select products_in_cart from carts where user_id = ${user_id};`)  
                 .then(dbres => {
                     products_in_cart = dbres[0];  
                 });                    
             
             if(products_in_cart == ""){ 
                 await sequelize.query(`INSERT INTO carts (user_id, products_in_cart)
-                        values (${1}, 
+                        values (${user_id}, 
                             jsonb_build_array(json_build_object('product_id', ${productId}, 'product_quantity', ${1})) ::jsonb
                             );`)
                 .then((dbres) => {
@@ -202,21 +209,21 @@ module.exports = {
                 }) 
             }
             else {    
-                 // CONSOLE.LOG TO SEE THE CONTENT OF products_in_cart in order to know if can use find() and filter() functions on it or not  
-                console.log('products_in_cart currently is ', JSON.stringify(products_in_cart), "\n");   
+                 // CONSOLE.LOG TO SEE THE CONTENT OF products_in_cart in order to know if can use find() functions on it or not  
+                // console.log('products_in_cart currently is ', JSON.stringify(products_in_cart), "\n");   
                 const arr = products_in_cart;
                 const products_and_quantities = arr[0].products_in_cart;     
-                console.log('products_and_quantities is ', products_and_quantities, "\n"); 
-                console.log('type of products_and_quantities is ', Array.isArray(products_and_quantities)); 
+                // console.log('products_and_quantities is ', products_and_quantities, "\n"); 
+                // console.log('type of products_and_quantities is ', Array.isArray(products_and_quantities)); 
                 let checkExistingProductInCart = products_and_quantities.find((element) => {return element.product_id == productId}) 
-                console.log('check Existing Product In Cart is ', checkExistingProductInCart); 
-                console.log('products_and_quantities is ', products_and_quantities, "\n"); 
+                // console.log('check Existing Product In Cart is ', checkExistingProductInCart); 
+                // console.log('products_and_quantities is ', products_and_quantities, "\n"); 
                 // console.log('type of products_and_quantities is Array?: ', Array.isArray(products_and_quantities)); 
                 if (checkExistingProductInCart == null){
                     await sequelize.query(`           
                     update carts 
                     set products_in_cart = products_in_cart || json_build_object('product_id', ${productId}, 'product_quantity', ${1})::jsonb
-                    where user_id = ${1};`)
+                    where user_id = ${user_id};`)
                     .then((dbres) => {  
                         console.log('add more products into cart: ');
                         res.status(200).send(`add more products into cart successfully! Product_id is " ${productId}, " Product_quantity is ", ${1}`);
@@ -230,7 +237,10 @@ module.exports = {
         console.log('req is ', req);
         let productId = +req.body.product_id; 
         let product_quantity = +req.body.product_quantity;
-        let new_product_quantity = product_quantity - 1;
+        let new_product_quantity = 0;
+        if (product_quantity >= 1){
+            new_product_quantity = product_quantity - 1;
+        }
         // await sequelize.query(`
         //     select product_quantity 
         //     from
@@ -313,20 +323,7 @@ module.exports = {
         }   
     },
 
-    // decreaseProductQuantity: (req, res) => {
-    //     let new_product_quantity = +req.params.product_quantity;
-    //     console.log(+req.params.product_id);
-    //     sequelize.query(`select product_quantity from products where product_id = ${+req.params.product_id} product_id = ${+req.params.product_id};`)
-    //         .then(dbres => {
-    //             new_product_quantity = dbres[0];
-    //         }) 
-    //         .catch(err => console.log(err));
-    //     sequelize.query(`update products set product_quantity = ${new_product_quantity - 1};`)
-    //         .then(dbres => {
-    //             res.status(200).send(dbres[0]);
-    //         })
-    //         .catch(err => console.log(err));
-    // },
+    // -----------------------------------ORDERS----------------------------------- //
 
     createOrder:  async (req, res) => {      
 

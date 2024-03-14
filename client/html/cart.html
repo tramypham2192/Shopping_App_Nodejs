@@ -30,7 +30,6 @@
         </ul>
     </nav>
 </header>
-<div id="displayCartPage"></div>
 <div class="container mt-3 mt-md-5">
     <h2 class="text-charcoal hidden-sm-down">Your Orders</h2>
     <div class="row">
@@ -62,27 +61,20 @@
                                     </div>
                                     <div class="col-9 col-md-8 pr-0 pr-md-3">
                                         <h6 class="text-charcoal mb-2 mb-md-1">
-                                            <a href="" class="text-charcoal"><p class="card-text">Name</p></a>
+                                            <a href="" class="text-charcoal"><p class="card-text">
+                                                <div class="rowTable bg-primary text-white pb-2">
+                                                    <div class="divTableCol">Product Name</div>                  
+                                                    <div class="divTableCol">Quantity</div>
+                                                    <div class="divTableCol">Price</div>
+                                                    <div class="divTableCol">Unit Total</div>
+                                                </div>  
+                                            </p></a>
                                         </h6>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row no-gutters mt-3">
-                            <div class="col-3 col-md-1">
-                            </div>
-                            <div class="col-9 col-md-8 pr-0 pr-md-3">
-                                <ul class="list-unstyled text-pebble mb-2 small">
-                                    <li class="">
-                                        <b><p class="card-text"   >Name</p></b>
-                                    </li>
-                                    <li class="">
-                                        <b><p class="card-text"   >Name</p></b>
-                                    </li>
-                                </ul>
-                                <h6 class="text-charcoal text-left mb-0 mb-md-2"><b><p class="card-text">Name</p></b></h6>
-                            </div>
-                        </div>
+                        <div id="displayCartPage"></div>
                     </div>
                 </div>
             </div>
@@ -100,8 +92,8 @@
                             Subtotal
                         </div>
                         <div class="col-6 text-right text-charcoal" >
-                            <div   if=${#lists.isEmpty(cartItemProductDtoList)  >0</div>
-                            <div   ><b ></div>
+                            <div>0</div>
+                            <div><b></div>
                         </div>
                     </div>
                 </div>

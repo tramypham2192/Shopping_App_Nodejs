@@ -47,18 +47,41 @@ db.connect();
 const {seedProducts, seedUsers} = require('./seed.js');
 
 // CALL FUNCTION IN CONTROLLER.JS
-const { 
-    getAllProductsWithSession,
-    updateCart,
-    register,
-    getCart,
-    createOrder,
-    insertIntoCart
-  } = require('./controller.js');
+const controller = require('./controller.js');
 
-// --------------------GET REQUESTS--------------------
 
-// log in - register - log out
+// --------------------PRODUCTS REQUESTS--------------------
+app.get("/productList", controller.getAllProductsWithSession);
+
+app.get("/products",  (req, res) => {
+  console.log("user after calling /products is " + req.user.user_firstname + " " + req.user.user_lastname);
+  if (req.isAuthenticated()) {
+    res.redirect("../html/productList.html");
+  } else {
+    res.redirect("/login");
+  }
+});
+
+
+
+// --------------------CART REQUESTS--------------------
+app.get("/getCart", controller.getCart);
+
+app.post("/insertIntoCart", controller.insertIntoCart);
+
+app.post('/decreaseProductQuantityInCart', controller.decreaseProductQuantityInCart);
+
+app.post('/increaseProductQuantityInCart', controller.increaseProductQuantityFunction);  
+
+
+
+// --------------------ORDER REQUESTS--------------------
+app.post("/order", controller.createOrder); 
+
+
+
+
+// --------------------LOGIN REQUESTS--------------------
 app.get("/login", (req, res) => {
   res.redirect("../html/register-login/login.html");
 });
@@ -72,33 +95,6 @@ app.get("/logout", (req, res) => {
   });
 });
 
-// // products-related requests
-app.get("/productList", getAllProductsWithSession);
-
-app.get("/products",  (req, res) => {
-  console.log("user after calling /products is " + req.user.user_firstname + " " + req.user.user_lastname);
-  if (req.isAuthenticated()) {
-    res.redirect("../html/productList.html");
-  } else {
-    res.redirect("/login");
-  }
-});
-
-app.get('/updateCart/:product_id/:product_quantity', updateCart);
-
-app.get('/updateCart/:product_id/:product_quantity', updateCart);  
-
-// // cart requests
-app.get("/getCart", getCart);
-
-// app.get("/cart", (req, res) => {
-//   console.log('req.user when accessing /cart is ' + req.user.user_firstname + " " + req.user.user_lastname);
-//   getCart;
-// })
-
-// // --------------------POST REQUESTS--------------------
-app.post('/register', register);
-
 app.post(
   "/login",
   passport.authenticate("local", {
@@ -107,43 +103,7 @@ app.post(
   })
 );
 
-app.post("/order", createOrder);
-
-app.post("/insertIntoCart", insertIntoCart);
-
-app.post("/register", async (req, res) => { 
-  const email = req.body.username;
-  const password = req.body.password;
-
-  try {
-    const checkResult = await db.query("SELECT * FROM users WHERE user_email = $1", [
-      email,
-    ]);
-
-    if (checkResult.rows.length > 0) {
-      req.redirect("/login");
-    } else {
-      bcrypt.hash(password, saltRounds, async (err, hash) => {
-        if (err) {
-          console.error("Error hashing password:", err);
-        } else {
-          const result = await db.query(
-            "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *",
-            [email, hash]
-          );
-          const user = result.rows[0];
-          req.login(user, (err) => {
-            console.log("success");
-            res.redirect("/products");
-          });
-        }
-      });
-    }
-  } catch (err) {
-    console.log(err); 
-  }
-});
-
+// PASSPORT.JS
 passport.use(
   new Strategy(async function verify(username, password, cb) {
     console.log('username after calling verify function is ' + username);
@@ -184,6 +144,46 @@ passport.serializeUser((user, cb) => {
 passport.deserializeUser((user, cb) => {
   cb(null, user);
 });
+
+
+
+
+// --------------------REGISTER REQUESTS--------------------
+app.post('/register', controller.register);
+
+app.post("/register", async (req, res) => { 
+  const email = req.body.username;
+  const password = req.body.password;
+
+  try {
+    const checkResult = await db.query("SELECT * FROM users WHERE user_email = $1", [
+      email,
+    ]);
+
+    if (checkResult.rows.length > 0) {
+      req.redirect("/login");
+    } else {
+      bcrypt.hash(password, saltRounds, async (err, hash) => {
+        if (err) {
+          console.error("Error hashing password:", err);
+        } else {
+          const result = await db.query(
+            "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *",
+            [email, hash]
+          );
+          const user = result.rows[0];
+          req.login(user, (err) => {
+            console.log("success");
+            res.redirect("/products");
+          });
+        }
+      });
+    }
+  } catch (err) {
+    console.log(err); 
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
