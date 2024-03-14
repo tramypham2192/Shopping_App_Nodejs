@@ -49,12 +49,11 @@ const {seedProducts, seedUsers} = require('./seed.js');
 // CALL FUNCTION IN CONTROLLER.JS
 const { 
     getAllProductsWithSession,
-    increaseProductQuantity,
-    decreaseProductQuantity,
+    updateCart,
     register,
     getCart,
     createOrder,
-    createCart
+    insertIntoCart
   } = require('./controller.js');
 
 // --------------------GET REQUESTS--------------------
@@ -85,12 +84,12 @@ app.get("/products",  (req, res) => {
   }
 });
 
-app.get('/increase_product_quantity/:product_id/:product_quantity', increaseProductQuantity);
+app.get('/updateCart/:product_id/:product_quantity', updateCart);
 
-app.get('/decrease_product_quantity/:product_id/:product_quantity', decreaseProductQuantity);  
+app.get('/updateCart/:product_id/:product_quantity', updateCart);  
 
 // // cart requests
-app.get("/cart", getCart);
+app.get("/getCart", getCart);
 
 // app.get("/cart", (req, res) => {
 //   console.log('req.user when accessing /cart is ' + req.user.user_firstname + " " + req.user.user_lastname);
@@ -110,40 +109,40 @@ app.post(
 
 app.post("/order", createOrder);
 
-app.post("/cart", createCart);
+app.post("/insertIntoCart", insertIntoCart);
 
-// app.post("/register", async (req, res) => { 
-//   const email = req.body.username;
-//   const password = req.body.password;
+app.post("/register", async (req, res) => { 
+  const email = req.body.username;
+  const password = req.body.password;
 
-//   try {
-//     const checkResult = await db.query("SELECT * FROM users WHERE user_email = $1", [
-//       email,
-//     ]);
+  try {
+    const checkResult = await db.query("SELECT * FROM users WHERE user_email = $1", [
+      email,
+    ]);
 
-//     if (checkResult.rows.length > 0) {
-//       req.redirect("/login");
-//     } else {
-//       bcrypt.hash(password, saltRounds, async (err, hash) => {
-//         if (err) {
-//           console.error("Error hashing password:", err);
-//         } else {
-//           const result = await db.query(
-//             "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *",
-//             [email, hash]
-//           );
-//           const user = result.rows[0];
-//           req.login(user, (err) => {
-//             console.log("success");
-//             res.redirect("/products");
-//           });
-//         }
-//       });
-//     }
-//   } catch (err) {
-//     console.log(err); 
-//   }
-// });
+    if (checkResult.rows.length > 0) {
+      req.redirect("/login");
+    } else {
+      bcrypt.hash(password, saltRounds, async (err, hash) => {
+        if (err) {
+          console.error("Error hashing password:", err);
+        } else {
+          const result = await db.query(
+            "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *",
+            [email, hash]
+          );
+          const user = result.rows[0];
+          req.login(user, (err) => {
+            console.log("success");
+            res.redirect("/products");
+          });
+        }
+      });
+    }
+  } catch (err) {
+    console.log(err); 
+  }
+});
 
 passport.use(
   new Strategy(async function verify(username, password, cb) {
