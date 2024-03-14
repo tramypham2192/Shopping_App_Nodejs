@@ -37,17 +37,32 @@ app.use(passport.session());
 
 module.exports = {
     getCart: async (req, res) => {
-        const productId = +req.body.product_id;
-        await sequelize.query(`Select user_id, products_in_cart from carts;`)
+        let products_and_quantities = [];
+        let responseData = [];
+
+        await sequelize.query(
+            `with product_id as (
+                SELECT DISTINCT value->'product_id' AS product_id
+                FROM carts, jsonb_array_elements(carts.products_in_cart)
+                )
+                ,
+                carts(product_quantity) as (
+                    SELECT DISTINCT value->'product_quantity' AS product_quantity
+                    FROM carts, jsonb_array_elements(carts.products_in_cart)
+                )
+                select product_name, product_price, product_quantity
+                from products
+                join carts
+                on products.product_id = product_id ::int;`)
         .then((dbres) => {
-            console.log(dbres[0]);
-            return res.status(200).send(dbres[0]);
+            console.log("product_name and product_quantity in carts is ", dbres[0]);
+            return res.status(200).send(dbres[0]); 
         })
         .catch(err => console.log(err));
     },
 
     getAllProducts: (req, res) => {
-        if (checkLogInSuccessWithoutSession == true) {
+        if (checkLogInSuccessWithoutSession == true) {   
             sequelize.query(`Select * from products ORDER BY product_id;`)
             .then((dbres) => {
                 console.log(dbres[0]);
