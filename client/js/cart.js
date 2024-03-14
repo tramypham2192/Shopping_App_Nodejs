@@ -14,11 +14,15 @@ function getAllcarts(){
     axios.get("http://localhost:4000/getCart")
     .then(res => {
           displayCartPage.innerHTML = "";
-          res.data.forEach(cart => {
+          res.data[1].forEach(cart => {
             console.log(cart);
             const cartCard = makecartCard(cart);
             displayCartPage.innerHTML += cartCard;
           });
+          subtotalFunction(res.data[1]);
+          totalFunction(res.data[1]);
+          displayDate();
+          displayCustomerName(res.data[0].user_firstname);
         })
         .catch(err => console.log(err)); 
   }
@@ -40,6 +44,7 @@ function getAllcarts(){
                                             <button class="qty-btn-plus  btn-rounded" onclick="increaseProductQuantityFunction(${cart.product_id}, ${cart.product_quantity});"><i class="fa fa-chevron-right"></i></button>
                                         </div>
                                     <div class="divTableCol"><strong>$ ${cart.product_price}</strong></div>
+                                    <div class="divTableCol"><strong>$ ${cart.product_price * cart.product_quantity}</strong></div>
                                     <div class="divTableCol">
                                         <button type="button" class="btn btn-danger"><span class="fa fa-remove"></span> Remove</button>
                                     </div>
@@ -82,3 +87,49 @@ function decreaseProductQuantityFunction (product_id, product_quantity) {
         getAllcarts(); // render new quantity without reloading page
     });
   }
+
+
+  // function to display subtotal
+  const subtotalBillDiv = document.querySelector("#subtotalBill");
+
+  function subtotalFunction(carts) {
+    let subtotal = 0;
+    for (cart of carts){
+        subtotal += cart.product_price * cart.product_quantity;
+    }
+    subtotalBillDiv.innerHTML = '$ ' + subtotal;
+  }
+
+// function to display subtotal
+const totalBillDiv = document.querySelector("#totalBill");
+
+function totalFunction(carts) {
+  let total = 0;
+  for (cart of carts){
+        total += cart.product_price * cart.product_quantity;
+  }
+  total += total * 0.1 + 4;
+  totalBillDiv.innerHTML = '$ ' + total;
+}
+
+// function to display Data
+const dateDiv = document.querySelector("#date");
+
+const d = new Date();
+const curr_date = d.getDate();
+const curr_month = d.getMonth() + 1; //Months are zero based
+const curr_year = d.getFullYear();
+const curr_hour = d.getHours(); 
+const curr_min = d.getMinutes(); 
+
+function displayDate() {
+    dateDiv.innerHTML = curr_date + "-" + curr_month + "-" + curr_year + " " + curr_hour + ":" + curr_min;
+}
+
+// function to display customer name
+const customerNameDiv = document.querySelector("#customerName");
+
+function displayCustomerName(name) {
+    customerNameDiv.innerHTML = name;
+}
+

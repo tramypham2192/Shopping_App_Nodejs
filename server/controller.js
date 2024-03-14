@@ -36,33 +36,7 @@ app.use (passport.initialize());
 app.use(passport.session()); 
 
 module.exports = {
-    // -----------------------------------CARTS----------------------------------- //
-    getCart: async (req, res) => {
-        let user_id = req.user.user_id;
-        let products_and_quantities = [];
-        let responseData = [];
-
-        await sequelize.query( 
-            `
-            select user_id, products.product_id, product_name, product_price, product_quantity 
-            from
-            (SELECT DISTINCT                             
-                user_id,
-                value->'product_id' AS product_id,
-                value->'product_quantity' AS product_quantity
-            FROM carts,
-            jsonb_array_elements(carts.products_in_cart)) processed_carts
-            inner join products on processed_carts.product_id::int = products.product_id
-            where user_id = ${user_id}
-            order by products.product_id;
-            `)
-        .then((dbres) => {
-            console.log("product_name and product_quantity in carts is ", dbres[0]);
-            return res.status(200).send(dbres[0]); 
-        })
-        .catch(err => console.log(err));
-    },
-
+    
     // -----------------------------------PRODUCTS----------------------------------- //
 
     getAllProducts: (req, res) => {
@@ -80,6 +54,8 @@ module.exports = {
         }
     },
 
+
+    
     getAllProductsWithSession: async (req, res) => {
         await sequelize.query(`Select * from products ORDER BY product_id;`)
         .then((dbres) => {
@@ -126,6 +102,8 @@ module.exports = {
         }
     },
 
+
+
     login: async (req, res) => {
         const email = req.body.email;
         const loginPassword = req.body.password;
@@ -152,6 +130,8 @@ module.exports = {
             }
         })
     },
+
+
 
     loginUsingCookieAndStrategy: (req, res) => {
         // register a sttrategy
@@ -188,6 +168,45 @@ module.exports = {
                 cb(null, user);
             })
     }, 
+
+    // -----------------------------------CARTS----------------------------------- //
+
+    getCart: async (req, res) => {
+        let user_id = req.user.user_id;
+        let products_and_quantities = [];
+        let responseData = [];
+        let user_firstname = "";
+        await sequelize.query(`
+            select user_firstname from users where user_id = ${user_id};
+        `)
+        . then(dbres => user_firstname = dbres[0][0].user_firstname);
+        console.log('user_firstname from /getCart is ', user_firstname);
+        await sequelize.query( 
+            `
+            select user_id, products.product_id, product_name, product_price, product_quantity 
+            from
+            (SELECT DISTINCT                             
+                user_id,
+                value->'product_id' AS product_id,
+                value->'product_quantity' AS product_quantity
+            FROM carts,
+            jsonb_array_elements(carts.products_in_cart)) processed_carts
+            inner join products on processed_carts.product_id::int = products.product_id
+            where user_id = ${user_id}
+            order by products.product_id;
+            `)
+        .then((dbres) => {
+            console.log("product_name and product_quantity in carts is ", dbres[0]);
+            for (element of dbres[0]){
+                responseData.push(element);
+            }
+        })
+        .catch(err => console.log(err));
+        console.log('responseData is ', responseData);
+        return res.status(200).send([{user_firstname: user_firstname}, responseData]); 
+    },
+
+
 
     insertIntoCart: async (req, res) => {  
         let user_id = req.user.user_id;
@@ -231,6 +250,8 @@ module.exports = {
                 }  
             }
     },
+
+
 
     decreaseProductQuantityInCart: async (req, res) => {
         console.log('decreaseProductQuantityInCart function is called');
@@ -278,6 +299,8 @@ module.exports = {
             })
         }   
     },
+
+
 
     increaseProductQuantityFunction: async (req, res) => {
         console.log('increaseProductQuantityInCart function is called');

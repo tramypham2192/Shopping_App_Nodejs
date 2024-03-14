@@ -39,11 +39,11 @@
                     <div class="row w-100 no-gutters">
                         <div class="col-6 col-md">
                             <h6 class="text-charcoal mb-0 w-100">Date</h6>
-                            <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">Name</p>
+                            <p class="text-pebble mb-0 w-100 mb-2 mb-md-0" id="date"></p>
                         </div>
                         <div class="col-6 col-md">
-                            <h6 class="text-charcoal mb-0 w-100">Customer Name</h6>
-                            <p class="text-pebble mb-0 w-100 mb-2 mb-md-0">Name</p>
+                            <h6 class="text-charcoal mb-0 w-100" >Customer Name</h6>
+                            <p class="text-pebble mb-0 w-100 mb-2 mb-md-0" id="customerName"></p>
                         </div>
                         <div class="col-12 col-md-3">
                             <a href="" class="btn btn-primary w-100"   href="  /checkout  ">Go to Check Out</a>
@@ -92,7 +92,7 @@
                             Subtotal
                         </div>
                         <div class="col-6 text-right text-charcoal" >
-                            <div>0</div>
+                            <div id="subtotalBill"></div>
                             <div><b></div>
                         </div>
                     </div>
@@ -103,7 +103,7 @@
                             Sales Tax
                         </div>
                         <div class="col-6 text-right text-charcoal">
-                            <div   if=${#lists.isEmpty(cartItemProductDtoList)  >0</div>
+                            <div   if=${#lists.isEmpty(cartItemProductDtoList)  >10%</div>
                             <div   ><b ></div>
                         </div>
                     </div>
@@ -114,7 +114,7 @@
                             Shipping
                         </div>
                         <div class="col-6 text-right text-charcoal">
-                            FREE
+                            $ 4
                         </div>
                     </div>
                 </div>
@@ -134,8 +134,8 @@
                             <b>Total</b>
                         </div>
                         <div class="col-4 text-right text-green">
-                            <div   if=${#lists.isEmpty(cartItemProductDtoList)  >0</div>
-                            <div   ><b  ></div>
+                            <div id="totalBill"></div>
+                            <div><b></div>
                         </div>
                     </div>
                 </div>
