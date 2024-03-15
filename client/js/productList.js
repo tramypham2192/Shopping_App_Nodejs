@@ -4,7 +4,7 @@ const productList = document.querySelector('#productList');
 function getAllProducts(){
   axios.get('http://localhost:4000/productList')
       .then(res => {
-        console.log('res from getAllProductWithSession is ' + res.data);
+        console.log('res from getAllProductWithSession is ', res.data);
         productList.innerHTML = "";
         res.data.forEach(product => {
           const productCard = makeProductCard(product);
@@ -27,7 +27,11 @@ function makeProductCard(product){
             <p class="card-text">${product.product_name}</p>
             <p class="card-text">${product.product_price} $</p>
             <p class="card-text">${product.product_description}</p>
-            <button type="button" id="addToCartButton"  onclick="addToCartButtononclick(${product.product_id});">Add to cart</button>
+            <div class="qty-container">
+                <button class="qty-btn-minus btn-rounded" onclick="decreaseProductQuantityInCart(${product.product_id}, ${product.product_quantity});"><i class="fa fa-chevron-left"></i></button>
+                <div id="id" style="display: inline;">${product.product_quantity}</div>
+                <button class="qty-btn-plus  btn-rounded" onclick="increaseProductQuantityInCart(${product.product_id}, ${product.product_quantity});"><i class="fa fa-chevron-right"></i></button>
+            </div>
             <button type="button" id="goToCartButton"  onclick="goToCartFunction();");">Go to cart</button>
             </div>
         </div>
@@ -42,24 +46,41 @@ function makeProductCard(product){
 getAllProducts();
       
 //--------------------------------------------FUNCTION TO INCREASE AND DECREASE PRODUCT QUANTITY----------------------------------------------------------------------//
-function increaseProductQuantity(product_id, product_quantity){
-  const obj = {
-    product_id: product_id,
-    product_quantity: product_quantity
-  };
-  axios.get('http://localhost:4000/updateCart', obj)
+function increaseProductQuantityInCart(product_id, product_quantity){
+  console.log('calling increaseProductQuantityInCart() in productList.js');
+  console.log('product_id when calling increaseProductQuantityInCart function in productList.js is ', product_id);
+  console.log('product_quantity when calling increaseProductQuantityInCart function in productList.js is ', product_quantity);
+  
+  if (product_quantity == 0) {
+    console.log('quantity == 0 => calling /insertIntoCart');
+    let cartObj = {
+      product_id: product_id,
+    }
+    axios.post('http://localhost:4000/insertIntoCart', cartObj)
     .then((res) => {
       getAllProducts();
-    })
+    });
+  }
+  else {
+    const obj = {
+      product_id: product_id,
+      product_quantity: product_quantity
+    };
+    axios.post('http://localhost:4000/increaseProductQuantityInCart', obj)
+      .then((res) => {
+        getAllProducts();
+      })
+  }
 }
 
-function decreaseProductQuantity(product_id, product_quantity){
+function decreaseProductQuantityInCart(product_id, product_quantity){
+  console.log('calling dereaseProductQuantityInCart() in productList.js');
   const obj = {
     product_id: product_id,
     product_quantity: product_quantity
   };
   if (product_quantity >= 1){
-    axios.get('http://localhost:4000/updateCart', obj) 
+    axios.post('http://localhost:4000/decreaseProductQuantityInCart', obj) 
     .then((res) => {
       getAllProducts();
     })
@@ -70,18 +91,20 @@ function decreaseProductQuantity(product_id, product_quantity){
 }
 
 //--------------------------------------------FUNCTION TO ADD TO CART----------------------------------------------------------------------//
-function addToCartButtononclick(product_id) {
-  let cartObj = {
-    product_id: product_id,
-  }
-  alert("Product added to cart. Quantity: 1. Please go to cart to add/reduce Quantity");
-  console.log('product_id in productList.js is ', product_id);
+// function addToCartButtononclick(product_id) {
+//   let cartObj = {
+//     product_id: product_id,
+//   }
+//   // alert("Product added to cart. Quantity: 1. Please go to cart to add/reduce Quantity");
+//   console.log('product_id in productList.js is ', product_id);
 
-  axios.post('http://localhost:4000/insertIntoCart', cartObj)
-  .then(res => console.log('res from calling /cart is ', res.data));
-};
+//   axios.post('http://localhost:4000/insertIntoCart', cartObj)
+//   .then(res => console.log('res from calling /cart is ', res.data));
+// };
 
 //--------------------------------------------FUNCTION TO GO TO CART PAGE----------------------------------------------------------------------//
 function goToCartFunction(){
   window.location.href = "../html/cart.html";
 }
+
+{/* <button type="button" id="addToCartButton"  onclick="addToCartButtononclick(${product.product_id});">Add to cart</button> */}
