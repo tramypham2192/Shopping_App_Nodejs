@@ -212,7 +212,7 @@ module.exports = {
     await sequelize
       .query(
         `
-            select user_id, products.product_id, product_name, product_price, product_quantity 
+            select user_id, products.product_id, product_name, product_imagepath, product_price, product_quantity 
             from
             (SELECT DISTINCT                             
                 user_id,
