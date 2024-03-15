@@ -5,10 +5,12 @@ function getAllProducts(){
   axios.get('http://localhost:4000/productList')
       .then(res => {
         console.log('res from getAllProductWithSession is ', res.data);
+
         productList.innerHTML = "";
         res.data.forEach(product => {
-          const productCard = makeProductCard(product);
-          productList.innerHTML += productCard;
+          // const productCard = makeProductCard(product);
+          // productList.innerHTML += productCard;
+          makeProductCard(product);
         });
       })
       .catch(err => console.log(err)); 
@@ -16,31 +18,35 @@ function getAllProducts(){
 
 // display product in card
 function makeProductCard(product){
-    const productCard = 
+    const productCard = document.createElement('div'); 
+    productCard.classList.add('product-card');
+    productCard.innerHTML =
     `
     <div class="container" style="height=200px; width=200px">
-    <div class="row"
-      <div class="col-12 col-sm-8 col-md-6 col-lg-4">
-        <div class="card">
-          <img class="img img-fluid" src="${product.product_imagepath}" alt="${product.product_name}"> 
-          <div class="card-body">
-            <p class="card-text">${product.product_name}</p>
-            <p class="card-text">${product.product_price} $</p>
-            <p class="card-text">${product.product_description}</p>
-            <div class="qty-container">
-                <button class="qty-btn-minus btn-rounded" onclick="decreaseProductQuantityInCart(${product.product_id}, ${product.product_quantity});"><i class="fa fa-chevron-left"></i></button>
-                <div id="id" style="display: inline;">${product.product_quantity}</div>
-                <button class="qty-btn-plus  btn-rounded" onclick="increaseProductQuantityInCart(${product.product_id}, ${product.product_quantity});"><i class="fa fa-chevron-right"></i></button>
+      <div class="row"
+        <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+          <div class="card">
+            <div class="image-card">
+              <img class="img img-fluid" src="${product.product_imagepath}" alt="${product.product_name}">         
             </div>
-            <button type="button" id="goToCartButton"  onclick="goToCartFunction();");">Go to cart</button>
-            </div>
+            <div class="card-body">
+              <p class="card-text">${product.product_name}</p>
+              <p class="card-text">${product.product_price} $</p>
+              <p class="card-text">${product.product_description}</p>
+              <div class="qty-container">
+                  <button class="qty-btn-minus btn-rounded" onclick="decreaseProductQuantityInCart(${product.product_id}, ${product.product_quantity});"><i class="fa fa-chevron-left"></i></button>
+                  <div id="id" style="display: inline;">${product.product_quantity}</div>
+                  <button class="qty-btn-plus  btn-rounded" onclick="increaseProductQuantityInCart(${product.product_id}, ${product.product_quantity});"><i class="fa fa-chevron-right"></i></button>
+              </div>
+              <button type="button" id="goToCartButton"  onclick="goToCartFunction();");">Go to cart</button>
+              </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
     `
-    return productCard;
-}
+    productList.appendChild(productCard);
+  }
 
 // call function getAllProducts
 getAllProducts();
