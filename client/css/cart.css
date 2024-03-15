@@ -1,0 +1,132 @@
+/* GLOBAL */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html {
+    /* font-size: 18px; */
+    /* 1rem = 18px */
+    /* không khai báo fs */
+    /* 1rem = 16px */
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+body {
+    font-family: "Montserrat", sans-serif;
+    color: #212529;
+    background-color: white;
+    letter-spacing: 1px;
+}
+
+h2{
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 3rem;
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+/* HEADER */
+a {
+    text-decoration: none;
+    color: #000;
+  }
+  .site-header {
+    border-bottom: 1px solid #ccc;
+    padding: .5em 1em;
+  }
+
+  .site-header::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  .site-identity {
+    float: left;
+  }
+
+  .site-identity h1 {
+    font-size: 1.5em;
+    margin: .7em 0 .3em 0;
+    display: inline-block;
+  }
+
+  .site-identity img {
+    max-width: 55px;
+    float: left;
+    margin: 0 10px 0 0;
+  }
+
+  .site-navigation {
+    float: right;
+  }
+
+  .site-navigation ul, li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .site-navigation li {
+    display: inline-block;
+    margin: 1.4em 1em 1em 1em;
+  }
+
+/* Bordered form */
+form {
+    border: 3px solid #f1f1f1;
+  }
+
+  /* Full-width inputs */
+  input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+
+  /* Set a style for all buttons */
+  button {
+    background-color: rgb(42, 103, 223);
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 10%;
+  }
+
+  /* Add a hover effect for buttons */
+  button:hover {
+    opacity: 0.8;
+  }
+
+
+  /* Change styles for span and cancel button on extra small screens */
+  @media screen and (max-width: 300px) {
+    span.psw {
+      display: block;
+      float: none;
+    }
+    .cancelbtn {
+      width: 100%;
+    }
+  }
+
+h1,h2,h3,h4,h5,h6 {
+  font-weight: 500 !important;
+}
+
+.image-card {
+  height: 80px;
+  border-radius: 10%;
+}
+
+
+
+
+

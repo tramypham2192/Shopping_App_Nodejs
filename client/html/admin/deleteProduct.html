@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Delete Product</title>
+    <link rel="stylesheet" href="../../css/product.css" />
+  </head>
+  <body>
+    <!--HEADER-->
+    <header class="site-header">
+      <div class="site-identity">
+        <a href="#"><img src="../../images/logo.jpeg" alt="Site Name" /></a>
+        <h1><a href="#">AUZZY THE BEAR</a></h1>
+      </div>
+      <nav class="site-navigation">
+        <ul class="nav">
+          <li>
+            <a href="/adminHomePage"
+              ><ion-icon name="home-outline"></ion-icon>Home</a
+            >
+          </li>
+          <li>
+            <a href="/product/productList"
+              ><ion-icon name="storefront-outline"></ion-icon>Products</a
+            >
+          </li>
+          <!-- DISPLAY USERNAME AFTER LOGGED IN HERE -->
+        </ul>
+      </nav>
+    </header>
+    <div class="container w-50 border mt-5" id="form">
+      <form
+        class="mt-5"
+        role="form"
+        name="delete-form"
+        id="delete-form"
+        method="GET"
+      >
+        <label for="productId">Product ID:</label><br />
+        <input type="text" id="productId" name="productId" value="" /><br />
+
+        <div class="d-flex justify-content-center">
+          <button
+            id="deleteProductButton"
+            type="submit"
+            value="Delete product"
+            class="btn-outline-success form-control w-50 m-3"
+          >
+            Delete Product
+          </button>
+        </div>
+      </form>
+    </div>
+    <script type="module" src="../../js/delete-product.js"></script>
+  </body>
+</html>

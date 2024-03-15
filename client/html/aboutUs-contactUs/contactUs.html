@@ -1,84 +1,177 @@
-<!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AUZZY THE BEAR</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-  <link rel="stylesheet" href="../../css/contactUs.css">
-</head>
-<body>
-<!-- HEADER -->
-<header class="site-header">
-    <div class="site-identity">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AUZZY THE BEAR</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../../css/contactUs.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="site-header">
+      <div class="site-identity">
         <a href="#"><img src="../../images/logo.jpeg" alt="Site Name" /></a>
         <h1><a href="#">AUZZY THE BEAR</a></h1>
-    </div>
-    <nav class="site-navigation">
+      </div>
+      <nav class="site-navigation">
         <ul class="nav">
-            <li><a href="../index.html"><ion-icon name="home-outline"></ion-icon>Home</a></li>
-            <li><a href="../aboutUs-contactUs/aboutUs.html"><ion-icon name="alert-circle-outline"></ion-icon>About</a></li>
-            <li><a href="../aboutUs-contactUs/contactUs.html"><ion-icon name="people-outline"></ion-icon>Contact</a></li>
-            <li><a href="../productList.html"><ion-icon name="storefront-outline"></ion-icon>Products</a></li>
-            <li><a href="../cart.html"><ion-icon name="cart"></ion-icon>Cart</a></li>
+          <li>
+            <a href="../index.html"
+              ><ion-icon name="home-outline"></ion-icon>Home</a
+            >
+          </li>
+          <li>
+            <a href="../aboutUs-contactUs/aboutUs.html"
+              ><ion-icon name="alert-circle-outline"></ion-icon>About</a
+            >
+          </li>
+          <li>
+            <a href="../aboutUs-contactUs/contactUs.html"
+              ><ion-icon name="people-outline"></ion-icon>Contact</a
+            >
+          </li>
+          <li>
+            <a href="../productList.html"
+              ><ion-icon name="storefront-outline"></ion-icon>Products</a
+            >
+          </li>
+          <li>
+            <a href="../cart.html"><ion-icon name="cart"></ion-icon>Cart</a>
+          </li>
         </ul>
-    </nav>
-  </header>
-<section id="contact">
+      </nav>
+    </header>
+    <section id="contact">
+      <h1 class="section-header">Contact</h1>
 
-  <h1 class="section-header">Contact</h1>
+      <div class="contact-wrapper">
+        <!-- Left contact page -->
 
-  <div class="contact-wrapper">
+        <form id="contact-form" class="form-horizontal" role="form">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                placeholder="NAME"
+                name="name"
+                value=""
+                required
+              />
+            </div>
+          </div>
 
-    <!-- Left contact page -->
+          <div class="form-group">
+            <div class="col-sm-12">
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                placeholder="EMAIL"
+                name="email"
+                value=""
+                required
+              />
+            </div>
+          </div>
 
-    <form id="contact-form" class="form-horizontal" role="form">
+          <textarea
+            class="form-control"
+            rows="10"
+            placeholder="MESSAGE"
+            name="message"
+            required
+          ></textarea>
 
-      <div class="form-group">
-        <div class="col-sm-12">
-          <input type="text" class="form-control" id="name" placeholder="NAME" name="name" value="" required>
+          <button
+            class="btn btn-primary send-button"
+            id="submit"
+            type="submit"
+            value="SEND"
+          >
+            <div class="alt-send-button">
+              <i class="fa fa-paper-plane"></i
+              ><span class="send-text">SEND</span>
+            </div>
+          </button>
+        </form>
+
+        <!-- Left contact page -->
+
+        <div class="direct-contact-container">
+          <ul class="contact-list">
+            <li class="list-item">
+              <i class="fa fa-map-marker fa-2x"
+                ><span class="contact-text place"
+                  >33 E Main St Los Gatos, CA 95030</span
+                ></i
+              >
+            </li>
+            <li class="list-item">
+              <i class="fa fa-phone fa-2x"
+                ><span class="contact-text phone"
+                  ><a href="tel:1-408-402-5254">(408) 402-5254</a></span
+                ></i
+              >
+            </li>
+          </ul>
+
+          <hr />
+          <ul class="social-media-list">
+            <a
+              href="https://twitter.com/share?ref_src=twsrc%5Etfw"
+              class="twitter-share-button"
+              data-show-count="false"
+              >Tweet</a
+            >
+            <script
+              async
+              src="https://platform.twitter.com/widgets.js"
+              charset="utf-8"
+            ></script>
+            <a
+              href="https://twitter.com/intent/tweet?button_hashtag=AuzzyTheBear&ref_src=twsrc%5Etfw"
+              class="twitter-hashtag-button"
+              data-show-count="false"
+              >Tweet #AuzzyTheBear</a
+            >
+            <script
+              async
+              src="https://platform.twitter.com/widgets.js"
+              charset="utf-8"
+            ></script>
+            <a
+              href="https://twitter.com/AuzzyTheBear?ref_src=twsrc%5Etfw"
+              class="twitter-follow-button"
+              data-show-count="false"
+              >Follow @AuzzyTheBear</a
+            >
+            <script
+              async
+              src="https://platform.twitter.com/widgets.js"
+              charset="utf-8"
+            ></script>
+          </ul>
+          <hr />
         </div>
       </div>
-
-      <div class="form-group">
-        <div class="col-sm-12">
-          <input type="email" class="form-control" id="email" placeholder="EMAIL" name="email" value="" required>
-        </div>
-      </div>
-
-      <textarea class="form-control" rows="10" placeholder="MESSAGE" name="message" required></textarea>
-
-      <button class="btn btn-primary send-button" id="submit" type="submit" value="SEND">
-        <div class="alt-send-button">
-          <i class="fa fa-paper-plane"></i><span class="send-text">SEND</span>
-        </div>
-      </button>
-
-    </form>
-
-    <!-- Left contact page -->
-
-    <div class="direct-contact-container">
-
-      <ul class="contact-list">
-        <li class="list-item"><i class="fa fa-map-marker fa-2x"><span class="contact-text place">33 E Main St Los Gatos, CA 95030</span></i></li>
-        <li class="list-item"><i class="fa fa-phone fa-2x"><span class="contact-text phone"><a href="tel:1-408-402-5254">(408) 402-5254</a></span></i></li>
-      </ul>
-
-      <hr>
-      <ul class="social-media-list">
-          <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-          <a href="https://twitter.com/intent/tweet?button_hashtag=AuzzyTheBear&ref_src=twsrc%5Etfw" class="twitter-hashtag-button" data-show-count="false">Tweet #AuzzyTheBear</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>    <a href="https://twitter.com/AuzzyTheBear?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @AuzzyTheBear</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-      </ul>
-      <hr>
-    </div>
-  </div>
-</section>
-<!-- icon io   -->
-<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-</body>
+    </section>
+    <!-- icon io   -->
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+  </body>
 </html>
