@@ -2,47 +2,115 @@ const productList = document.querySelector('#productList');
 
 // use axios to get the list of all products
 function getAllProducts(){
-    axios.get('http://localhost:4000/products')
-        .then(res => {
-            res.data.forEach(product => {
-                const productCard = makeProductCard(product);
-                productList.innerHTML += productCard;
-            });
-        })
-        .catch(err => console.log(err));
+  axios.get('http://localhost:4000/productList')
+      .then(res => {
+        console.log('res from getAllProductWithSession is ', res.data);
+
+        productList.innerHTML = "";
+        res.data.forEach(product => {
+          // const productCard = makeProductCard(product);
+          // productList.innerHTML += productCard;
+          makeProductCard(product);
+        });
+      })
+      .catch(err => console.log(err)); 
 }
 
 // display product in card
 function makeProductCard(product){
-    const productCard = 
+    const productCard = document.createElement('div'); 
+    productCard.classList.add('product-card');
+    productCard.innerHTML =
     `
     <div class="container" style="height=200px; width=200px">
-    <div class="row"
-      <div class="col-12 col-sm-8 col-md-6 col-lg-4">
-        <div class="card">
-          <img class="card-img-top" src="${product.imagepath}" alt="${product.name}">
-          <div class="card-body">
-            <p class="card-text">${product.name}</p>
-            <p class="card-text">${product.price} $</p>
-            <p class="card-text">${product.description}</p>
-            <div class= "container mt-5 pb-5">
-              <div class="row">
-                  <div class="qty-container">
-                    <button class="qty-btn-minus btn-rounded"   data-param1="${product.id}"  onclick="decreaseProductQuantity(this);"><i class="fa fa-chevron-left"></i></button>
-                    <div id="id" style="display: inline;"  id="${product.id}"}>0</div>
-                    <button class="qty-btn-plus  btn-rounded"   data-param1="${product.id}"  onclick="increaseProductQuantity(this);"><i class="fa fa-chevron-right"></i></button>
-                  </div>
-              </div>
+      <div class="row"
+        <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+          <div class="card">
+            <div class="image-card">
+              <img class="img img-fluid" src="${product.product_imagepath}" alt="${product.product_name}">         
             </div>
-            <button type="button" id="addToCartButton"  onclick="'addToCartButtononclick()'">Add to cart</button>
+            <div class="card-body">
+              <p class="card-text">${product.product_name}</p>
+              <p class="card-text">${product.product_price} $</p>
+              <p class="card-text">${product.product_description}</p>
+              <div class="qty-container">
+                  <button class="qty-btn-minus btn-rounded" onclick="decreaseProductQuantityInCart(${product.product_id}, ${product.product_quantity});"><i class="fa fa-chevron-left"></i></button>
+                  <div id="id" style="display: inline;">${product.product_quantity}</div>
+                  <button class="qty-btn-plus  btn-rounded" onclick="increaseProductQuantityInCart(${product.product_id}, ${product.product_quantity});"><i class="fa fa-chevron-right"></i></button>
+              </div>
+              <button type="button" id="goToCartButton"  onclick="goToCartFunction();");">Go to cart</button>
+              </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
     `
-    return productCard;
-}
+    productList.appendChild(productCard);
+  }
 
 // call function getAllProducts
 getAllProducts();
+      
+//--------------------------------------------FUNCTION TO INCREASE AND DECREASE PRODUCT QUANTITY----------------------------------------------------------------------//
+function increaseProductQuantityInCart(product_id, product_quantity){
+  console.log('calling increaseProductQuantityInCart() in productList.js');
+  console.log('product_id when calling increaseProductQuantityInCart function in productList.js is ', product_id);
+  console.log('product_quantity when calling increaseProductQuantityInCart function in productList.js is ', product_quantity);
+  
+  if (product_quantity == 0) {
+    console.log('quantity == 0 => calling /insertIntoCart');
+    let cartObj = {
+      product_id: product_id,
+    }
+    axios.post('http://localhost:4000/insertIntoCart', cartObj)
+    .then((res) => {
+      getAllProducts();
+    });
+  }
+  else {
+    const obj = {
+      product_id: product_id,
+      product_quantity: product_quantity
+    };
+    axios.post('http://localhost:4000/increaseProductQuantityInCart', obj)
+      .then((res) => {
+        getAllProducts();
+      })
+  }
+}
+
+function decreaseProductQuantityInCart(product_id, product_quantity){
+  console.log('calling dereaseProductQuantityInCart() in productList.js');
+  const obj = {
+    product_id: product_id,
+    product_quantity: product_quantity
+  };
+  if (product_quantity >= 1){
+    axios.post('http://localhost:4000/decreaseProductQuantityInCart', obj) 
+    .then((res) => {
+      getAllProducts();
+    })
+  }
+  else {
+    alert("The product quantity is 0. Can not substract anymore!");
+  }
+}
+
+//--------------------------------------------FUNCTION TO ADD TO CART----------------------------------------------------------------------//
+// function addToCartButtononclick(product_id) {
+//   let cartObj = {
+//     product_id: product_id,
+//   }
+//   // alert("Product added to cart. Quantity: 1. Please go to cart to add/reduce Quantity");
+//   console.log('product_id in productList.js is ', product_id);
+
+//   axios.post('http://localhost:4000/insertIntoCart', cartObj)
+//   .then(res => console.log('res from calling /cart is ', res.data));
+// };
+
+//--------------------------------------------FUNCTION TO GO TO CART PAGE----------------------------------------------------------------------//
+function goToCartFunction(){
+  window.location.href = "../html/cart.html";
+}
+
+{/* <button type="button" id="addToCartButton"  onclick="addToCartButtononclick(${product.product_id});">Add to cart</button> */}

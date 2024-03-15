@@ -45,6 +45,18 @@ h2{
     letter-spacing: 2px;
 }
 
+.house-card {
+  background-color: turquoise;
+  width: 300px;
+  margin: 20px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 12px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
 /* HEADER */
 a {
     text-decoration: none;
@@ -493,3 +505,33 @@ ul.list {
 .list li + li {
   border-top: 1px solid #ccc;
 }
+
+#productList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.product-card {
+  background-color: #ad872f;
+  width: 300px;
+  margin: 20px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 12px;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.container .row .card .image-card {
+  height: 350px;
+}
+
+.container .row .card .image-card img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
