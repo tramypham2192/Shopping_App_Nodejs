@@ -32,7 +32,7 @@ function makeProductCard(product) {
             <div class="card-body">
               <p class="card-text">${product.product_name}</p>
               <p class="card-text">${product.product_price} $</p>
-              <p class="card-text">${product.product_description}</p>
+              <span class="description_card-text">${product.product_description}</span>
               <div class="qty-container">
                   <button class="qty-btn-minus btn-rounded" onclick="decreaseProductQuantityInCart(${product.product_id}, ${product.product_quantity});"><i class="fa fa-chevron-left"></i></button>
                   <div id="id" style="display: inline;">${product.product_quantity}</div>

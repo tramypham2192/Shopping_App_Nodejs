@@ -514,7 +514,7 @@ ul.list {
 }
 
 .product-card {
-  background-color: #ad872f;
+  background-color: white;
   width: 300px;
   margin: 20px; 
   display: flex;
@@ -526,12 +526,20 @@ ul.list {
 }
 
 .container .row .card .image-card {
-  height: 350px;
+  height: 250px;
 }
 
 .container .row .card .image-card img {
-  height: 100%;
+  height:100%;
   width: 100%;
   object-fit: cover;
+}
+
+.description_card-text {
+  display:inline-block;
+  width:180px;
+  white-space: nowrap;
+  overflow:hidden !important;
+  text-overflow: ellipsis;
 }
 
