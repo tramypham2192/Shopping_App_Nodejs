@@ -543,3 +543,10 @@ ul.list {
   text-overflow: ellipsis;
 }
 
+input.search, span {
+  margin-top: 20px;
+}
+
+input.search {
+  margin-left: 20px;
+}

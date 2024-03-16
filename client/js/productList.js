@@ -9,8 +9,6 @@ function getAllProducts() {
 
       productList.innerHTML = "";
       res.data.forEach((product) => {
-        // const productCard = makeProductCard(product);
-        // productList.innerHTML += productCard;
         makeProductCard(product);
       });
     })
@@ -56,11 +54,11 @@ function increaseProductQuantityInCart(product_id, product_quantity) {
   console.log("calling increaseProductQuantityInCart() in productList.js");
   console.log(
     "product_id when calling increaseProductQuantityInCart function in productList.js is ",
-    product_id,
+    product_id
   );
   console.log(
     "product_quantity when calling increaseProductQuantityInCart function in productList.js is ",
-    product_quantity,
+    product_quantity
   );
 
   if (product_quantity == 0) {
@@ -101,23 +99,7 @@ function decreaseProductQuantityInCart(product_id, product_quantity) {
   }
 }
 
-//--------------------------------------------FUNCTION TO ADD TO CART----------------------------------------------------------------------//
-// function addToCartButtononclick(product_id) {
-//   let cartObj = {
-//     product_id: product_id,
-//   }
-//   // alert("Product added to cart. Quantity: 1. Please go to cart to add/reduce Quantity");
-//   console.log('product_id in productList.js is ', product_id);
-
-//   axios.post('http://localhost:4000/insertIntoCart', cartObj)
-//   .then(res => console.log('res from calling /cart is ', res.data));
-// };
-
 //--------------------------------------------FUNCTION TO GO TO CART PAGE----------------------------------------------------------------------//
 function goToCartFunction() {
   window.location.href = "../html/cart.html";
-}
-
-{
-  /* <button type="button" id="addToCartButton"  onclick="addToCartButtononclick(${product.product_id});">Add to cart</button> */
 }

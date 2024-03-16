@@ -49,11 +49,39 @@
           </li>
         </ul>
       </nav>
-    </header>
+    </header> 
+    <!-- SEARCH AND SORT PRODUCTS -->
+    <div class="container">
+      <div class="row">
+        <div class="form-group mb-4">
+          <input id="searchProductInput" placeholder="Search for products..." aria-describedby="button-addon" class="form-control border-secondary" />
+          <button id="searchProductBtn" onclick="searchProductFunction()">Search</button>
+        </div>  
+      </div>
+      <div class="row">
+        <div class="col-sm">
+          <div class="form-group"> 
+            <form id="sortProductsFromCheapestToMostExpensive">
+              <input class="sort btn btn-default" type="submit" value="Sort Products From Cheapest To Most Expensive" />
+            </form>
+          </div>        
+        </div>
+        <div class="col-sm">
+          <div class="form-group">
+            <form id="sortProductsAccordingToMostOrdered">
+              <input type="submit" class="sort btn btn-default" value="Top 3 Most Ordered Products"/>
+            </form>
+          </div>        
+        </div>
+      </div>
+    </div>
+  
+    <!-- PRODUCT LIST -->
     <main>
       <section id="productList"></section>
     </main>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="../js/searchProduct.js"></script>
     <script src="../js/productList.js"></script>
     <script
       type="module"
