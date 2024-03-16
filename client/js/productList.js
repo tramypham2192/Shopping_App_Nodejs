@@ -1,3 +1,4 @@
+
 const productList = document.querySelector("#productList");
 
 // use axios to get the list of all products
@@ -34,7 +35,7 @@ function makeProductCard(product) {
               <div class="qty-container">
                   <button class="qty-btn-minus btn-rounded" onclick="decreaseProductQuantityInCart(${product.product_id}, ${product.product_quantity});"><i class="fa fa-chevron-left"></i></button>
                   <div id="id" style="display: inline;">${product.product_quantity}</div>
-                  <button class="qty-btn-plus  btn-rounded" onclick="increaseProductQuantityInCart(${product.product_id}, ${product.product_quantity});"><i class="fa fa-chevron-right"></i></button>
+                  <button id="${product.product_id}" qty="${product.product_quantity}" class="qty-btn-plus  btn-rounded"><i class="fa fa-chevron-right"></i></button>
               </div>
               <button type="button" id="goToCartButton"  onclick="goToCartFunction();");">Go to cart</button>
               </div>
@@ -43,6 +44,10 @@ function makeProductCard(product) {
       </div>
     </div>
     `;
+  const increaseButton = document.querySelectorAll(".qty-btn-plus");
+  for (element of increaseButton) {
+    element.addEventListener("click", increaseProductQuantityInCart);
+  }
   productList.appendChild(productCard);
 }
 
@@ -50,7 +55,17 @@ function makeProductCard(product) {
 getAllProducts();
 
 //--------------------------------------------FUNCTION TO INCREASE AND DECREASE PRODUCT QUANTITY----------------------------------------------------------------------//
-function increaseProductQuantityInCart(product_id, product_quantity) {
+function increaseProductQuantityInCart(evt) {
+  console.log('evt is ', evt.target);
+  // console.log('evt sibling is ', evt.target.previousSibling.baseURI);
+  // console.log('evt sibling is ', evt.target.previousSibling.previousSibling.innerHTML);
+  // console.log('evt.target.getAttribute id is ', evt.target.getAttribute(`id`));
+  // console.log('evt.target.getAttribute qty is ', evt.target.getAttribute(`qty`));
+
+  const product_id = evt.target.getAttribute(`id`);
+  const product_quantity = evt.target.getAttribute(`qty`);
+  let quantityValue = evt.target.previousSibling.previousSibling;
+
   console.log("calling increaseProductQuantityInCart() in productList.js");
   console.log(
     "product_id when calling increaseProductQuantityInCart function in productList.js is ",
@@ -67,17 +82,22 @@ function increaseProductQuantityInCart(product_id, product_quantity) {
       product_id: product_id,
     };
     axios.post("http://localhost:4000/insertIntoCart", cartObj).then((res) => {
-      getAllProducts();
+      // getAllProducts();
+      console.log('quantityValue.innerHTML is ', +quantityValue.innerHTML++);
+      quantityValue.innerHTML = +quantityValue.innerHTML++;
     });
   } else {
+    console.log('in else statement: ');
     const obj = {
       product_id: product_id,
-      product_quantity: product_quantity,
+      product_quantity: quantityValue.innerHTML,
     };
     axios
       .post("http://localhost:4000/increaseProductQuantityInCart", obj)
       .then((res) => {
-        getAllProducts();
+        // getAllProducts();
+        console.log('quantityValue.innerHTML is ', +quantityValue.innerHTML++);
+        quantityValue.innerHTML = quantityValue.innerHTML++;
       });
   }
 }
@@ -103,3 +123,23 @@ function decreaseProductQuantityInCart(product_id, product_quantity) {
 function goToCartFunction() {
   window.location.href = "../html/cart.html";
 }
+
+function searchProductFunction() {
+  const keyword = document.querySelector("#searchProductInput").value;
+  console.log('keyword after input in search box of /productList.html is ', keyword);
+  axios.get(`http://localhost:4000/searchProduct/${keyword}`).then((res) => {
+    console.log("res from searchProductFunction is ", res.data); 
+    productList.innerHTML = "";
+      res.data.forEach((product) => {
+        makeProductCard(product);
+      });
+    // window.location.href = "../html/product/searchProduct.html";
+    // return axios.get(`http://localhost:4000/getSearchProduct/`)
+  });
+}
+
+
+
+
+
+

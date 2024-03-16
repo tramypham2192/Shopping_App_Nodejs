@@ -52,24 +52,26 @@
     </header> 
     <!-- SEARCH AND SORT PRODUCTS -->
     <div class="container">
-      <div class="row">
-        <div class="form-group mb-4">
-          <input id="searchProductInput" placeholder="Search for products..." aria-describedby="button-addon" class="form-control border-secondary" />
-          <button id="searchProductBtn" onclick="searchProductFunction()">Search</button>
-        </div>  
+        <div class="form-group col-sm">
+          <div class="input-group">
+            <input id="searchProductInput" placeholder="Search for products..." aria-describedby="button-addon" class="form-control border-secondary" style="padding: 5px 5px 5px 10px; width: 600px; height: 45px;" />
+            <div class="input-group-append">
+              <button id="searchProductBtn" onclick="searchProductFunction()" class="btn" type="button"><i class="fa fa-search"></i></button>
+            </div>
+          </div>
       </div>
       <div class="row">
         <div class="col-sm">
           <div class="form-group"> 
-            <form id="sortProductsFromCheapestToMostExpensive">
-              <input class="sort btn btn-default" type="submit" value="Sort Products From Cheapest To Most Expensive" />
+            <form id="sortByPrice">
+              <input class="sort btn btn-default" type="submit" value="Sort By Price" onchange="sortByPriceFunction()"/>
             </form>
           </div>        
         </div>
         <div class="col-sm">
           <div class="form-group">
-            <form id="sortProductsAccordingToMostOrdered">
-              <input type="submit" class="sort btn btn-default" value="Top 3 Most Ordered Products"/>
+            <form id="sortByMostOrdered">
+              <input type="submit" class="sort btn btn-default" value="Sort By Most Ordered"/>
             </form>
           </div>        
         </div>
@@ -81,8 +83,8 @@
       <section id="productList"></section>
     </main>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="../js/searchProduct.js"></script>
     <script src="../js/productList.js"></script>
+    <!-- <script src="../js/searchProduct.js"></script> -->
     <script
       type="module"
       src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
