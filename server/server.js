@@ -66,6 +66,10 @@ app.get("/products", (req, res) => {
   }
 });
 
+app.get("/searchProduct/:keyword", controller.searchProduct);
+
+app.get("/getSearchProduct", controller.getSearchProduct);
+
 // --------------------CART REQUESTS--------------------
 app.get("/getCart", controller.getCart);
 

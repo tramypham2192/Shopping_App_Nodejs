@@ -29,7 +29,7 @@ app.use(
     secret: "passwordDoMinhTuDat",
     resave: false,
     saveUninitialized: true,
-  }),
+  })
 );
 
 app.use(passport.initialize());
@@ -70,13 +70,49 @@ module.exports = {
             where user_id = ${req.user.user_id}) processed_carts 
             on processed_carts.product_id::int = products.product_id
             order by products.product_id;     
-        `,
+        `
       )
       .then((dbres) => {
         console.log(dbres[0]);
         return res.status(200).send(dbres[0]);
       })
       .catch((err) => console.log(err));
+  },
+
+  searchProduct: async (req, res) => {
+    const keyword = req.params.keyword;
+    await sequelize
+      .query(
+        `   
+        select COALESCE(user_id, ${req.user.user_id}) as user_id, allproducts.product_id, product_name, product_imagepath,  product_description, product_price, COALESCE(product_quantity::int, 0) as product_quantity
+        FROM 
+          (select COALESCE(user_id, 31) as user_id, products.product_id, product_name, product_imagepath,  product_description, product_price, COALESCE(product_quantity::int, 0) as product_quantity
+          from products
+          left join
+            (SELECT DISTINCT                             
+              user_id,
+              value->'product_id' AS product_id,
+              value->'product_quantity' AS product_quantity
+            FROM carts,
+            jsonb_array_elements(carts.products_in_cart
+            )
+            where user_id = ${req.user.user_id}) processed_carts 
+            on processed_carts.product_id::int = products.product_id
+            order by products.product_id) allproducts
+        WHERE CONCAT(allproducts.product_name, ' ', allproducts.product_price) ILIKE '%${keyword}%';
+        `
+      )
+      .then((dbres) => {
+        console.log(dbres[0]);
+        res.send(dbres[0]);
+      })
+      .catch((err) => console.log(err));
+  },
+
+  getSearchProduct: (req, res) => {
+    const keyWord = module.exports.searchProduct();
+    console.log('keyword from calling getSearchProduct() in controller.js is ', keyWord);
+    res.status(200).send();
   },
 
   // -----------------------------------USERS----------------------------------- //
@@ -96,7 +132,7 @@ module.exports = {
       .then((dbres) =>
         dbres[0].map((el) => {
           return el.user_email;
-        }),
+        })
       );
     if (!emailList.includes(email)) {
       // step 2: hash password
@@ -111,16 +147,16 @@ module.exports = {
           sequelize
             .query(
               `INSERT INTO users (user_firstname, user_lastname, user_email, user_password)
-                    values ('${firstname}', '${lastname}', '${email}', '${hash}');`,
+                    values ('${firstname}', '${lastname}', '${email}', '${hash}');`
             )
             .then((dbres) =>
-              res.status(200).send("User register successfully!"),
+              res.status(200).send("User register successfully!")
             );
         }
       });
     } else if (emailList.includes(email)) {
       res.send(
-        "This email attached to an existing account! Please use another email!",
+        "This email attached to an existing account! Please use another email!"
       );
     }
   },
@@ -164,7 +200,7 @@ module.exports = {
         let storedPassword = "";
         await sequelize
           .query(
-            `select user_password from users where user_email = '${email}';`,
+            `select user_password from users where user_email = '${email}';`
           )
           .then((dbres) => {
             console.log(dbres[0]);
@@ -182,7 +218,7 @@ module.exports = {
             }
           }
         });
-      }),
+      })
     );
 
     passport.serializeUser((user, cb) => {
@@ -205,7 +241,7 @@ module.exports = {
       .query(
         `
             select user_firstname from users where user_id = ${user_id};
-        `,
+        `
       )
       .then((dbres) => (user_firstname = dbres[0][0].user_firstname));
     console.log("user_firstname from /getCart is ", user_firstname);
@@ -223,7 +259,7 @@ module.exports = {
             inner join products on processed_carts.product_id::int = products.product_id
             where user_id = ${user_id}
             order by products.product_id;
-            `,
+            `
       )
       .then((dbres) => {
         console.log("product_name and product_quantity in carts is ", dbres[0]);
@@ -254,14 +290,14 @@ module.exports = {
           `INSERT INTO carts (user_id, products_in_cart)
                         values (${user_id}, 
                             jsonb_build_array(json_build_object('product_id', ${productId}, 'product_quantity', ${1})) ::jsonb
-                            );`,
+                            );`
         )
         .then((dbres) => {
           console.log("insert new product into cart: ");
           res
             .status(200)
             .send(
-              `insert new product into cart successfully! Product_id is " ${productId}, " Product_quantity is ", ${1}`,
+              `insert new product into cart successfully! Product_id is " ${productId}, " Product_quantity is ", ${1}`
             );
         });
     } else {
@@ -274,7 +310,7 @@ module.exports = {
       let checkExistingProductInCart = products_and_quantities.find(
         (element) => {
           return element.product_id == productId;
-        },
+        }
       );
       // console.log('check Existing Product In Cart is ', checkExistingProductInCart);
       // console.log('products_and_quantities is ', products_and_quantities, "\n");
@@ -285,14 +321,14 @@ module.exports = {
             `           
                     update carts 
                     set products_in_cart = products_in_cart || json_build_object('product_id', ${productId}, 'product_quantity', ${1})::jsonb
-                    where user_id = ${user_id};`,
+                    where user_id = ${user_id};`
           )
           .then((dbres) => {
             console.log("add more products into cart: ");
             res
               .status(200)
               .send(
-                `add more products into cart successfully! Product_id is " ${productId}, " Product_quantity is ", ${1}`,
+                `add more products into cart successfully! Product_id is " ${productId}, " Product_quantity is ", ${1}`
               );
           });
       } else if (
@@ -310,14 +346,14 @@ module.exports = {
           // console.log('updateIndex is ', updateIndex);
           await sequelize
             .query(
-              `update carts set products_in_cart = jsonb_set(products_in_cart, '{${updateIndex}}' , '{"product_id": ${productId}, "product_quantity": ${1}}');`,
+              `update carts set products_in_cart = jsonb_set(products_in_cart, '{${updateIndex}}' , '{"product_id": ${productId}, "product_quantity": ${1}}');`
             )
             .then((dbres) => {
               // console.log('update product quantity in cart: ');
               res
                 .status(200)
                 .send(
-                  `update product quantity in cart successfully! Product_id is " ${productId}, " Product_quantity is ", ${1}`,
+                  `update product quantity in cart successfully! Product_id is " ${productId}, " Product_quantity is ", ${1}`
                 );
             });
         }
@@ -338,7 +374,7 @@ module.exports = {
     let products_in_cart = "";
     await sequelize
       .query(
-        `select products_in_cart from carts where user_id = ${req.user.user_id};`,
+        `select products_in_cart from carts where user_id = ${req.user.user_id};`
       )
       .then((dbres) => {
         products_in_cart = dbres[0];
@@ -360,14 +396,14 @@ module.exports = {
       // console.log('updateIndex is ', updateIndex);
       await sequelize
         .query(
-          `update carts set products_in_cart = jsonb_set(products_in_cart, '{${updateIndex}}' , '{"product_id": ${productId}, "product_quantity": ${new_product_quantity}}');`,
+          `update carts set products_in_cart = jsonb_set(products_in_cart, '{${updateIndex}}' , '{"product_id": ${productId}, "product_quantity": ${new_product_quantity}}');`
         )
         .then((dbres) => {
           // console.log('update product quantity in cart: ');
           res
             .status(200)
             .send(
-              `update product quantity in cart successfully! Product_id is " ${productId}, " Product_quantity is ", ${new_product_quantity}`,
+              `update product quantity in cart successfully! Product_id is " ${productId}, " Product_quantity is ", ${new_product_quantity}`
             );
         });
     }
@@ -375,7 +411,7 @@ module.exports = {
 
   increaseProductQuantityFunction: async (req, res) => {
     console.log(
-      "increaseProductQuantityInCart function in controller.js is called",
+      "increaseProductQuantityInCart function in controller.js is called"
     );
     let productId = +req.body.product_id;
     let product_quantity = +req.body.product_quantity;
@@ -384,7 +420,7 @@ module.exports = {
     let products_in_cart = "";
     await sequelize
       .query(
-        `select products_in_cart from carts where user_id = ${req.user.user_id};`,
+        `select products_in_cart from carts where user_id = ${req.user.user_id};`
       )
       .then((dbres) => {
         products_in_cart = dbres[0];
@@ -396,7 +432,7 @@ module.exports = {
     console.log("products_and_quantities is ", products_and_quantities, "\n");
     console.log(
       "type of products_and_quantities is ",
-      Array.isArray(products_and_quantities),
+      Array.isArray(products_and_quantities)
     );
     let updateObj = products_and_quantities.find((element) => {
       return element.product_id == productId;
@@ -409,14 +445,14 @@ module.exports = {
       console.log("updateIndex is ", updateIndex);
       await sequelize
         .query(
-          `update carts set products_in_cart = jsonb_set(products_in_cart, '{${updateIndex}}' , '{"product_id": ${productId}, "product_quantity": ${new_product_quantity}}');`,
+          `update carts set products_in_cart = jsonb_set(products_in_cart, '{${updateIndex}}' , '{"product_id": ${productId}, "product_quantity": ${new_product_quantity}}');`
         )
         .then((dbres) => {
           console.log("update product quantity in cart: ");
           res
             .status(200)
             .send(
-              `update product quantity in cart successfully! Product_id is " ${productId}, " Product_quantity is ", ${new_product_quantity}`,
+              `update product quantity in cart successfully! Product_id is " ${productId}, " Product_quantity is ", ${new_product_quantity}`
             );
         });
     }
