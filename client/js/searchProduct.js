@@ -7,13 +7,24 @@ function searchProductFunction() {
   console.log('keyword after input in search box of /productList.html is ', keyword);
   axios.get(`http://localhost:4000/searchProduct/${keyword}`).then((res) => {
     console.log("res from searchProductFunction is ", res.data); 
-
     productSearchList.innerHTML = "";
     res.data.forEach((product) => {
       makeProductCard(product);
     });
+    // window.location.href = "../html/product/searchProduct.html";
   });
 }
+
+// function searchProductFunction() {
+//   axios.get(`http://localhost:4000/getSearchProduct`).then((res) => {
+//     console.log("res from searchProductFunction is ", res.data); 
+//     productSearchList.innerHTML = "";
+//     res.data.forEach((product) => {
+//       makeProductCard(product);
+//     });
+//   }); 
+// }
+searchProductFunction();
 
 // display product in card
 function makeProductCard(product) {
@@ -65,7 +76,7 @@ function increaseProductQuantityInCart(product_id, product_quantity) {
       product_id: product_id,
     };
     axios.post("http://localhost:4000/insertIntoCart", cartObj).then((res) => {
-      // searchProductFunction();
+      searchProductFunction();
     });
   } else {
     const obj = {
@@ -75,7 +86,7 @@ function increaseProductQuantityInCart(product_id, product_quantity) {
     axios
       .post("http://localhost:4000/increaseProductQuantityInCart", obj)
       .then((res) => {
-        // searchProductFunction();
+        searchProductFunction();
       });
   }
 }
@@ -90,7 +101,7 @@ function decreaseProductQuantityInCart(product_id, product_quantity) {
     axios
       .post("http://localhost:4000/decreaseProductQuantityInCart", obj)
       .then((res) => {
-        // searchProductFunction();
+        searchProductFunction();
       });
   } else {
     alert("The product quantity is 0. Can not substract anymore!");

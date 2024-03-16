@@ -467,7 +467,6 @@ transition: all 300ms ease;
 
 .about-section .image-column .video-link .link:hover{
 background-color: #191e34;
-color: #f
 }
 
 .qty-container .qty-btn-minus,
@@ -550,3 +549,4 @@ input.search, span {
 input.search {
   margin-left: 20px;
 }
+
