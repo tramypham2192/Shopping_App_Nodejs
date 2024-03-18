@@ -1,6 +1,5 @@
 # AUZZY THE BEAR
 
-## _an e-commerce website I made for my friends' business  
 
 ## Table of Contents
 
@@ -14,13 +13,11 @@
 
 Auzzy the Bear is an e-commerce website I made for my friend's business
 
-## <a name="summary"></a>Summary
 
 
-[![**Find my demo video here**](static/youtube-rs.jpg)](https://www.youtube.com/watch?v=L8U-3fkMGBw "AUZZY THE BEAR")
+## <a name="features"></a>Features
+[![Demo video](https://export-download.canva.com/de9g8/DAF_4Sde9g8/10/0/0001-7679059445157010737.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJHKNGJLC2J7OGJ6Q%2F20240318%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240318T013723Z&X-Amz-Expires=63966&X-Amz-Signature=05568eb5db5ba8426cb58a620c45e56a30ccd6509f87521407390af8dde6337c&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%2A%3DUTF-8%27%27Tech%2520Stack.png&response-expires=Mon%2C%2018%20Mar%202024%2019%3A23%3A29%20GMT)](https://www.youtube.com/watch?v=L8U-3fkMGBw "AUZZY THE BEAR")
 
-<br>
-<br>
 
 ## <a name="tech-stack"></a>Tech Stack
 
@@ -30,17 +27,17 @@ Auzzy the Bear is an e-commerce website I made for my friend's business
 
 ## <a name="features"></a>Features
 
-<br/>![Registration and Log in]<br/><br/>
+#### Registration and Log in
 Customer can register for a new user account 
 Log in session is implemented using Passport.js 
 
-<br/>![Browse product list and add products into cart]<br/><br/>
+#### Browse product list and add products into cart
 
 Upon successful log in, customer can browse product list
 Customer can search for products using keywords
 Customer can add products into cart, increase and decrease product quantity in cart
 
-<br/>![View the cart and update product quantity in cart]<br/><br/>
+#### View the cart and update product quantity in cart
 
 Customer can view products and each product's quantity in cart
 Customer can view unit total price for each product, and total bill amount
@@ -87,7 +84,7 @@ $ nodemon server/server.js
 Once you run this command, tables are created and seeded with data in seed.js file
 
 
-In your browser, visit <a href="http://localhost:4000/html/index.html">http://localhost:4000/html/index.html/</a>
+In your browser, visit <a href="http://localhost:4000/html/index.html">http://localhost:4000/html/index.html</a>
 
 
 
