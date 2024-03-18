@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { CONNECTION_STRING } = process.env;
+const { CONNECTION_STRING, secret } = process.env;
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(CONNECTION_STRING, {
   dialect: "postgres",
@@ -26,7 +26,7 @@ app.use(cors());
 app.use(
   session({
     // create a new instance
-    secret: "passwordDoMinhTuDat",
+    secret: process.env.secret,
     resave: false,
     saveUninitialized: true,
   })
