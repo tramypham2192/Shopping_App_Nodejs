@@ -28,21 +28,21 @@ Auzzy the Bear is an e-commerce website I made for my friend's business
 ## <a name="features"></a>Features
 
 #### Registration and Log in
-###### Customer can register for a new user account 
-###### Log in session is implemented using Passport.js 
+- Customer can register for a new user account 
+- Log in session is implemented using Passport.js 
 
 #### Browse product list and add products into cart
 
-###### Upon successful log in, customer can browse product list
-###### Customer can search for products using keywords
-###### Customer can add products into cart, increase and decrease product quantity in cart
+- Upon successful log in, customer can browse product list
+- Customer can search for products using keywords
+- Customer can add products into cart, increase and decrease product quantity in cart
 
 #### View the cart and update product quantity in cart
 
-###### Customer can view products and each product's quantity in cart
-###### Customer can view unit total price for each product, and total bill amount
-###### Customer can increase and decrease quantity for each product in cart
-###### If the product quantity is decreased to 0, the product would no longer display in cart
+- Customer can view products and each product's quantity in cart
+- Customer can view unit total price for each product, and total bill amount
+- Customer can increase and decrease quantity for each product in cart
+- If the product quantity is decreased to 0, the product would no longer display in cart
 
 
 ## <a name="installation"></a>Local Installation
