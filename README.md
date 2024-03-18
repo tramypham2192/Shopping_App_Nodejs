@@ -16,7 +16,7 @@ Auzzy the Bear is an e-commerce website I made for my friend's business
 
 
 ## <a name="features"></a>Features
-[![Demo video](https://export-download.canva.com/de9g8/DAF_4Sde9g8/10/0/0001-7679059445157010737.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJHKNGJLC2J7OGJ6Q%2F20240318%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240318T013723Z&X-Amz-Expires=63966&X-Amz-Signature=05568eb5db5ba8426cb58a620c45e56a30ccd6509f87521407390af8dde6337c&X-Amz-SignedHeaders=host&response-content-disposition=attachment%3B%20filename%2A%3DUTF-8%27%27Tech%2520Stack.png&response-expires=Mon%2C%2018%20Mar%202024%2019%3A23%3A29%20GMT)](https://www.youtube.com/watch?v=L8U-3fkMGBw "AUZZY THE BEAR")
+[![Demo video](./assets/Tech%20Stack.png)](https://www.youtube.com/watch?v=L8U-3fkMGBw "AUZZY THE BEAR")
 
 
 ## <a name="tech-stack"></a>Tech Stack
@@ -81,11 +81,13 @@ $ npm install
 $ nodemon server/server.js
 ```
 
-Once you run this command, tables are created and seeded with data in seed.js file
+- Once you run this command, tables are created and seeded with data in seed.js file
 
 
-In your browser, visit <a href="http://localhost:4000/html/index.html">http://localhost:4000/html/index.html</a>
+- In your browser, visit <a href="http://localhost:4000/html/index.html">http://localhost:4000/html/index.html</a>
 
+- Click Register in log in screen and register for a new customer account
 
+- Log in and start using the app
 
 ## Connect and learn more about My (Mee) Pham on <a href="https://www.linkedin.com/in/my-mee-pham/">LinkedIn</a>.
