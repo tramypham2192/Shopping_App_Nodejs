@@ -15,7 +15,7 @@ Auzzy the Bear is an e-commerce website I made for my friend's business
 
 
 
-## <a name="features"></a>Features
+## <a name="features"></a>Video Demo
 [![Demo video](./assets/Video%20demo.png)](https://www.youtube.com/watch?v=L8U-3fkMGBw "AUZZY THE BEAR")
 
 
