@@ -12,9 +12,10 @@ const app = express();
 const port = 4000;
 
 // CREATE A SESSION
+const {SECRET} = process.env;
 app.use(
   session({
-    secret: "TOPSECRETWORD",
+    secret: SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
