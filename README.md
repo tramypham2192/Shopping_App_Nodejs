@@ -69,6 +69,7 @@ $ cd Shopping_App_Nodejs
 Inside your .env file, create a variable named CONNECTION_STRING, initialize its value with the string as follows:
 "postgresql://postgres:password@localhost/database_name"
 (password is your pgadmin login password, database_name is the name of the database you created for this app)
+Create another variable named SECRET, set its value to be the password for the log in session
 ```
 
 #### Install dependencies:
