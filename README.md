@@ -21,9 +21,9 @@ Auzzy the Bear is an e-commerce website I made for my friend's business
 
 ## <a name="tech-stack"></a>Tech Stack
 
-**Back End:** Node.js, Express.js, Passport.js<br/>
-**Front End:** JavaScript, AJAX, JSON, Bootstrap, HTML, CSS<br/>
-**Database::** Postgresql, Sequelize (ORM)<br/>
+- **Back End:** Node.js, Express.js, Passport.js<br/>
+- **Front End:** JavaScript, AJAX, JSON, Bootstrap, HTML, CSS<br/>
+- **Database::** Postgresql, Sequelize (ORM)<br/>
 
 ## <a name="features"></a>Features
 
@@ -47,28 +47,31 @@ Auzzy the Bear is an e-commerce website I made for my friend's business
 
 ## <a name="installation"></a>Local Installation
 
+#### Setup:
+
+- Install pgAdmin
+
+- Create a Postgresql database:
+
 
 To run this app on local environment, please follow these steps:
 
-Clone repository:
+#### Clone repository:
 
 ```
 $ git clone https://github.com/tramypham2192/Shopping_App_Nodejs.git
+
+cd Shopping_App_Nodejs
 ```
 
-#### Setup:
-
-Install pgAdmin
-
-Create a Postgresql database:
-
+#### Create your .env file:
 ```
-Change CONNECTION_STRING variable in server/controller.js as follows:
+Inside your .env file, create a variable named CONNECTION_STRING, initialize its value with the string as follows:
 "postgresql://postgres:password@localhost/database_name"
 (password is your pgadmin login password, database_name is the name of the database you created for this app)
 ```
 
-Install dependencies:
+#### Install dependencies:
 
 ```
 $ npm install
@@ -90,4 +93,4 @@ $ nodemon server/server.js
 
 - Log in and start using the app
 
-## Connect and learn more about My (Mee) Pham on <a href="https://www.linkedin.com/in/my-mee-pham/">LinkedIn</a>.
+#### Connect and learn more about My (Mee) Pham on <a href="https://www.linkedin.com/in/my-mee-pham/">LinkedIn</a>.

@@ -34,14 +34,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // CONNECT TO DATABASE
-const db = new pg.Client({
-  user: "postgres",
-  host: "localhost",
-  database: "shopping_app",
-  password: "new_password",
-  port: 5432,
-});
-db.connect();
+const {CONNECTION_STRING} = process.env;
+const { Sequelize } = require("sequelize");
+const db = new Sequelize(CONNECTION_STRING);
+
 
 // CALL FUNCTION IN SEED.JS
 const { seedProducts, seedUsers } = require("./seed.js");
