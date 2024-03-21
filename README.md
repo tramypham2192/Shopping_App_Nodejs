@@ -61,7 +61,7 @@ To run this app on local environment, please follow these steps:
 ```
 $ git clone https://github.com/tramypham2192/Shopping_App_Nodejs.git
 
-cd Shopping_App_Nodejs
+$ cd Shopping_App_Nodejs
 ```
 
 #### Create your .env file:
@@ -81,7 +81,7 @@ $ npm install
 #### Run the server:
 
 ```
-$ nodemon server/server.js
+$ node server/server.js
 ```
 
 - Once you run this command, tables are created and seeded with data in seed.js file
